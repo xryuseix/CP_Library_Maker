@@ -1,0 +1,1 @@
+moved to https://github.com/xryuseix/Competitive_Programming_Library_Maker
