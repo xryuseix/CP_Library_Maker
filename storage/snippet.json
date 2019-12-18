@@ -39,7 +39,7 @@
 	"lcm": {
 		"prefix": "lcm",
 		"body": [
-			"ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}",
+			"// gcdも呼ぶ！！！",
 			"ll lcm(ll a, ll b) { return a / gcd(a,   b) * b;}"
 		],
 		"description": "最小公倍数"
@@ -47,8 +47,8 @@
 	"nlcm": {
 		"prefix": "nlcm",
 		"body": [
-			"ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}",
-			"ll lcm(ll a, ll b) { return a / gcd(a,   b) * b;}",
+			"// gcdも呼ぶ！！！",
+			"// lcmも呼ぶ！！！",
 			"int nlcm(vector<int> numbers) {",
 				"\tint l;",
 				"\tl = numbers[0];",
@@ -135,8 +135,8 @@
 	"quicksort": {
 		"prefix": "quicksort",
 		"body": [
-			"#define N 10",
-			"int a[N];",
+			"#define QsoetN 10",
+			"int a[QsoetN];",
 			"void quicksort(int a[], int first, int last){",
 				"\tint i, j, x;",
 
@@ -155,12 +155,12 @@
 				"\tif(j + 1 < last) quicksort(a, j + 1, last);",
 			"}"
 		],
-		"description": "クイックソートですsort関数で十分です"
+		"description": "クイックソートですがsort関数で十分です"
 	},
 	"ngcd": {
 		"prefix": "ngcd",
 		"body": [
-			"ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}",
+			"// gcdも呼ぶ！！！",
 			"ll ngcd(vector<ll> a){",
 			"\tll d;",
 			"\td = a[0];",
@@ -259,10 +259,10 @@
 	"hakidashi": {
 		"prefix": "hakidashi",
 		"body": [
-			"#define N 20 //20元連立方程式まで解ける",
+			"#define RANK 20 //20元連立方程式まで解ける",
 			"/*",
 			"使用方法",
-				"\tdouble a[N][N+1];",
+				"\tdouble a[RANK][RANK+1];",
 				"\tint i, n;",
 				"\ta[0][0] = 2; a[0][1] = 3; a[0][2] = 1; a[0][3] = 4;",
 				"\ta[1][0] = 4; a[1][1] = 1; a[1][2] = -3 ; a[1][3] = -2;",
@@ -271,7 +271,7 @@
 				"\thakidashi(a,n);",
 			"*/",
 
-			"void hakidashi(double a[][N+1], int n) { ",
+			"void hakidashi(double a[][RANK+1], int n) { ",
 				"\tdouble piv, t;",
 				"\tint i, j, k;",
 		
@@ -390,7 +390,9 @@
 	"stringcount": {
 		"prefix": "stringcount",
 		"body": [
-			"count(s.cbegin(), s.cend(), '$1')"
+			"int stringcount(string s, char c) {",
+			"\treturn count(s.cbegin(), s.cend(), c);",
+			"}"
 		],
 		"description": "文字列中の特定の文字の個数をカウント"
 	},
@@ -415,27 +417,27 @@
 	"bitsearch": {
 		"prefix": "bitsearch",
 		"body": [
-			"int n = 5;",
-			"",
 			"// {0, 1, ..., n-1} の部分集合の全探索",
-			"for (int bit = 0; bit < (1<<n); ++bit){",
-			"\t/* bit で表される集合の処理を書く */",
-			"\t",
-			"\t/* きちんとできていることを確認してみる */",
-			"\t// bit の表す集合を求める",
-			"\tvector<int> S;",
-			"\tfor(int i = 0; i < n; ++i) {",
-			"\t\tif(bit & (1<<i) ){ // i が bit に入るかどうか",
-			"\t\t\tS.push_back(i);",
+			"void bitsearch(int n) {",
+			"\tfor(int bit = 0; bit < (1<<n); ++bit){",
+			"\t\t/* bit で表される集合の処理を書く */",
+			"\t\t",
+			"\t\t/* きちんとできていることを確認してみる */",
+			"\t\t// bit の表す集合を求める",
+			"\t\tvector<int> S;",
+			"\t\tfor(int i = 0; i < n; ++i) {",
+			"\t\t\tif(bit & (1<<i) ){ // i が bit に入るかどうか",
+			"\t\t\t\tS.push_back(i);",
+			"\t\t\t}",
 			"\t\t}",
+			"\t\t",
+			"\t\t// bit の表す集合の出力",
+			"\t\tcout << bit << \": {\";",
+			"\t\tfor(int  i = 0; i < S.size(); ++i) {",
+			"\t\t\tcout << S[i] << \" \";",
+			"\t\t}",
+			"\t\tcout << \"}\" << endl;",
 			"\t}",
-			"\t",
-			"\t// bit の表す集合の出力",
-			"\tcout << bit << \": {\";",
-			"\tfor(int  i = 0; i < S.size(); ++i) {",
-			"\t\tcout << S[i] << \" \";",
-			"\t}",
-			"\tcout << \"}\" << endl;",
 			"}"
 		],
 		"description": "bit全探索"
@@ -557,8 +559,8 @@
 		],
 		"description": "最長共通部分列問題を解く"
 	},
-	"template": {
-		"prefix": "template",
+	"icpctemplate": {
+		"prefix": "icpctemplate",
 		"body": [
 			"#include <iostream>",
 			"#include <algorithm>",
@@ -570,7 +572,7 @@
 			"#define rep(i,n) for(int i = 0; i < (n); ++i)",
 			"int main(void){}"
 		],
-		"description": "テンプレート"
+		"description": "ICPCテンプレート"
 	},
 	"gpriority_queue": {
 		"prefix": "gpriority_queue",
@@ -583,7 +585,7 @@
 		"prefix": "bellman_ford",
 		"body": [
 			"// 頂点fromから頂点toへのコストcostの辺",
-			"struct edge {",
+			"struct bf_edge {",
 				"\tint from;",
 				"\tint to;",
 				"\tint cost;",
@@ -591,7 +593,7 @@
 			"",
 			"class Bellman_Ford{",
 			"public:",
-				"\tvector<edge> es; // 辺",
+				"\tvector<bf_edge> es; // 辺",
 				"\tvector<int> d; // d[i]...頂点sから頂点iまでの最短距離",
 				"\tint V, E; // Vは頂点数、Eは辺数",
 				"",
@@ -602,7 +604,7 @@
 				"\t}",
 				"",
 				"\tvoid add(int from, int to, int cost) {",
-					"\t\tedge ed = {from, to, cost};",
+					"\t\tbf_edge ed = {from, to, cost};",
 					"\t\tes.push_back(ed);",
 				"\t}",
 				"",
@@ -615,7 +617,7 @@
 					"\t\twhile(true) {",
 						"\t\t\tbool update = false;",
 						"\t\t\tfor(int i = 0; i < E; i++) {",
-							"\t\t\t\tedge e = es[i];",
+							"\t\t\t\tbf_edge e = es[i];",
 							"\t\t\t\tif(d[e.from] != INF && d[e.to] > d[e.from] + e.cost) {",
 								"\t\t\t\t\td[e.to] = d[e.from] + e.cost;",
 								"\t\t\t\t\tupdate = true;",
@@ -631,7 +633,7 @@
 					"\t\t}",
 					"\t\tfor (int i = 0; i < 3*V; i++) {",
 						"\t\t\tfor(int j = 0; j < E; j++) {",
-							"\t\t\t\tedge e = es[j];",
+							"\t\t\t\tbf_edge e = es[j];",
 							"\t\t\t\tif(d[e.to] > d[e.from] + e.cost) {",
 								"\t\t\t\t\td[e.to] = d[e.from] + e.cost;",
 								"",
@@ -649,7 +651,7 @@
 	"topological_sort": {
 		"prefix": "topological_sort",
 		"body": [
-			"vvi G(1000); //グラフ(リスト)",
+			"vvi G(1000); // グラフ(リスト)",
 			"",
 			"// トポロジカルソート",
 			"void rec(int v, vector<bool> &seen, vector<int> &order) {",
@@ -684,24 +686,24 @@
 			"public:",
 				"\tint V;",
 				"",
-				"\tstruct edge {",
+				"\tstruct dk_edge {",
 					"\t\tint to;",
 					"\t\tint cost;",
 				"\t};",
 				"",
 				"\ttypedef pair<int, int> PI; //firstは最短距離、secondは頂点の番号",
-				"\tvector<vector<edge> >G;",
+				"\tvector<vector<dk_edge> >G;",
 				"\tvector<int> d; //これ答え。d[i]:=V[i]までの最短距離",
 				"\tvector<int> prev; //経路復元",
 				"",
 				"\tDIJKSTRA(int size) {",
 					"\t\tV = size;",
-					"\t\tG = vector<vector<edge> >(V);",
+					"\t\tG = vector<vector<dk_edge> >(V);",
 					"\t\tprev = vector<int> (V, -1);",
 				"\t}",
 				"",
 				"\tvoid add(int from, int to, int cost) {",
-					"\t\tedge e = {to, cost};",
+					"\t\tdk_edge e = {to, cost};",
 					"\t\tG[from].push_back(e);",
 				"\t}",
 				"",
@@ -718,7 +720,7 @@
 						"\t\t\tint v = p.second;",
 						"\t\t\tif(d[v] < p.first) continue;",
 						"\t\t\tfor(int i = 0; i < G[v].size(); i++) {",
-							"\t\t\t\tedge e = G[v][i];",
+							"\t\t\t\tdk_edge e = G[v][i];",
 							"\t\t\t\tif(d[e.to] > d[v] + e.cost) {",
 								"\t\t\t\t\td[e.to] = d[v] + e.cost;",
 								"\t\t\t\t\tprev[e.to] = v;",
@@ -806,7 +808,9 @@
 	"intersect": {
 		"prefix": "intersect",
 		"body": [
-			"set_intersection(a.begin(), a.end(), b.begin(), b.end(), inserter(res, res.end()));"
+			"void intersect(set<int> &Set_A, set<int> &Set_B, set<int> &Set_res) {",
+			"\tset_intersection(Set_A.begin(), Set_A.end(), Set_B.begin(), Set_B.end(), inserter(Set_res, Set_res.end()));",
+			"}"
 		],
 		"description": "setのintersect"
 	},
@@ -827,7 +831,9 @@
 	"indexdintance": {
 		"prefix": "indexdistance",
 		"body": [
-			"static_cast<int>(std::distance(std::begin(array), std::find(std::begin(array), std::end(array), $1c)))"
+			"int indexdistance(vector<int> distance_array, char c) {",
+			"\treturn static_cast<int>(std::distance(std::begin(distance_array), std::find(std::begin(distance_array), std::end(distance_array), c)));",
+			"}"
 		],
 		"description": "特定の文字の配列内の添字"
 	},
@@ -898,43 +904,44 @@
 	"kruskal": {
 		"prefix": "kruskal",
 		"body": [
-			"//Union-Findも呼んで！！",
-			"struct edge {",
-				"\tint u; //辺の片方，fromではないので二回辺を張る必要はない",
-				"\tint v; //辺のもう片方",
+			"UnionFind uni(100);",
+			"// Union-Findも呼んで！！そして上の書き換えて！！！",
+			"struct kr_edge {",
+				"\tint u; // 辺の片方，fromではないので二回辺を張る必要はない",
+				"\tint v; // 辺のもう片方",
 				"\tint cost;",
 				"",
 				"\t// コストの大小で順序定義",
-				"\tbool operator<(const edge& e) const {",
+				"\tbool operator<(const kr_edge& e) const {",
 					"\t\treturn cost < e.cost;",
 				"\t}",
 			"};",
 			"class Kruskal{",
 				"\tpublic:",
 				"",
-				"\tbool comp(const edge& e1, const edge& e2) { //sort関数の比較関数",
+				"\tbool comp(const kr_edge& e1, const kr_edge& e2) { // sort関数の比較関数",
 					"\t\treturn e1.cost < e2.cost;",
 				"\t}",
 				"",
-				"\tvector<edge> es; //辺の集合",
-				"\tvector<edge> minst; //最小全域木に用いられる辺の集合",
-				"\tint V, E; //頂点数と辺数",
+				"\tvector<kr_edge> es; //辺の集合",
+				"\tvector<kr_edge> minst; // 最小全域木に用いられる辺の集合",
+				"\tint V, E; // 頂点数と辺数",
 				"",
 				"\tKruskal(int v) {",
 					"\t\tV = v;",
 				"\t}",
 				"",
 				"\tvoid add(int v, int u, int cost){",
-					"\t\tedge e = {v, u, cost};",
+					"\t\tkr_edge e = {v, u, cost};",
 					"\t\tes.push_back(e);",
 				"\t}",
 				"",
 				"\tint kruskal() {",
-					"\t\tsort(es.begin(), es.end()); //edge.costが小さい順にソートされる",
+					"\t\tsort(es.begin(), es.end()); // kr_edge.costが小さい順にソートされる",
 					"\t\tUnionFind uni(V); //union-findの初期化",
 					"\t\tint res = 0;",
 					"\t\tfor(int i = 0; i < es.size(); i++) {",
-						"\t\t\tedge e = es[i];",
+						"\t\t\tkr_edge e = es[i];",
 						"\t\t\tif(uni.root(e.u) != uni.root(e.v)) {",
 							"\t\t\t\tuni.connect(e.u, e.v);",
 							"\t\t\t\tres += e.cost;",
@@ -1097,7 +1104,7 @@
 		"prefix": "lis",
 		"body": [
 			"int lis(vector<int>& v) {",
-    			"\tvvi dp(1, v[0]);",
+    			"\tvi dp(1, v[0]);",
     			"\tfor(int i = 1; i < v.size(); i++) {",
     			    "\t\tif(v[i] > dp[dp.size() - 1]) {",
     			        "\t\t\tdp.push_back(v[i]);",
@@ -1363,7 +1370,7 @@
 		],
 		"description": "二次元座標圧縮"
 	},
-	"templete": {
+	"template": {
 		"prefix": "templete",
 		"body": [
 			"#include <iostream>",
