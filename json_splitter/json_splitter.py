@@ -23,3 +23,5 @@ for k in keys:
                 f.write("// Quote from " + quote[qu] + "\n\n")
         for st in json_dict[k]['body']:
             f.write(st + '\n')
+
+print("jsonファイルの分割が完了しました")
