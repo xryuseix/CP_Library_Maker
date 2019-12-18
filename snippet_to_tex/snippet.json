@@ -1,9 +1,0 @@
-{
-	"gcd": {
-		"prefix": "gcd",
-		"body": [
-			"ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}"
-		],
-		"description": "ユークリッドの互除法"
-	}
-}

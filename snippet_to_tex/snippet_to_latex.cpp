@@ -50,7 +50,7 @@ map<string, string> encode(string s){
                 }
             }
             
-            for(int j = 0; j < body.size(); j++) {//body整形
+            for(int j = 0; j < body.size(); j++) { // body整形
                 
                 if(body[j] == '\"') {
                     if(j == 0 || body[j - 1] != '\\') {
@@ -78,27 +78,27 @@ map<string, string> encode(string s){
     return snipet;
 }
 int main(void){
-    char InitFile[] = "init.txt";//初期化ファイル(init file)
-    char InputFile[] = "snippet.json";//スニペットが入っているファイル(snippet file)
-    char OutputFile[] = "snippet.tex";//出力ファイル(output file)
+    char InitFile[] = "init.txt"; // 初期化ファイル(init file)
+    char InputFile[] = "./../storage/snippet.json"; // スニペットが入っているファイル(snippet file)
+    char OutputFile[] = "./../storage/LaTeX/library.tex"; // 出力ファイル(output file)
     string init_str = "";
     string input_str = "";
     
     char c;
 
     FILE *fp;
-    fp = fopen(InitFile, "r");//初期化ファイル入力
+    fp = fopen(InitFile, "r"); // 初期化ファイル入力
     while((c = fgetc(fp)) != EOF) {
         init_str+=c;
     }
     fclose(fp);
-    fp = fopen(InputFile, "r"); //スニペット入力
+    fp = fopen(InputFile, "r"); // スニペット入力
     while((c = fgetc(fp)) != EOF) {
         input_str+=c;
     }
     fclose(fp);
 
-    ofstream writing_file; //初期化ファイル出力
+    ofstream writing_file; // 初期化ファイル出力
     writing_file.open(OutputFile, ios::out);
     writing_file << init_str<<endl<<endl;
     cout << "ファイルへの出力が完了しました" << endl;
@@ -114,7 +114,6 @@ int main(void){
         writing_file << "\\begin{lstlisting}[caption=" << it->first << "]" << endl;
         writing_file << it->second<<endl << endl;
         writing_file << "\\end{lstlisting}" << endl << endl;
-        // writing_file << "\\vspace{30pt}" << endl << endl;
     }
     writing_file << "\\end{document}" << endl;
 
