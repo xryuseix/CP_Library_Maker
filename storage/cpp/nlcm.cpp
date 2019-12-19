@@ -1,7 +1,7 @@
 // n個の値の最小公倍数
 
-ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}
-ll lcm(ll a, ll b) { return a / gcd(a,   b) * b;}
+// gcdも呼ぶ！！！
+// lcmも呼ぶ！！！
 int nlcm(vector<int> numbers) {
 	int l;
 	l = numbers[0];

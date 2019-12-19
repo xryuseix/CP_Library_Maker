@@ -1,7 +1,7 @@
 // ベルマンフォード法
 
 // 頂点fromから頂点toへのコストcostの辺
-struct edge {
+struct bf_edge {
 	int from;
 	int to;
 	int cost;
@@ -9,7 +9,7 @@ struct edge {
 
 class Bellman_Ford{
 public:
-	vector<edge> es; // 辺
+	vector<bf_edge> es; // 辺
 	vector<int> d; // d[i]...頂点sから頂点iまでの最短距離
 	int V, E; // Vは頂点数、Eは辺数
 
@@ -20,7 +20,7 @@ public:
 	}
 
 	void add(int from, int to, int cost) {
-		edge ed = {from, to, cost};
+		bf_edge ed = {from, to, cost};
 		es.push_back(ed);
 	}
 
@@ -33,7 +33,7 @@ public:
 		while(true) {
 			bool update = false;
 			for(int i = 0; i < E; i++) {
-				edge e = es[i];
+				bf_edge e = es[i];
 				if(d[e.from] != INF && d[e.to] > d[e.from] + e.cost) {
 					d[e.to] = d[e.from] + e.cost;
 					update = true;
@@ -49,7 +49,7 @@ public:
 		}
 		for (int i = 0; i < 3*V; i++) {
 			for(int j = 0; j < E; j++) {
-				edge e = es[j];
+				bf_edge e = es[j];
 				if(d[e.to] > d[e.from] + e.cost) {
 					d[e.to] = d[e.from] + e.cost;
 

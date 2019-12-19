@@ -1,6 +1,6 @@
 // トポロジカルソート
 
-vvi G(1000); //グラフ(リスト)
+vvi G(1000); // グラフ(リスト)
 
 // トポロジカルソート
 void rec(int v, vector<bool> &seen, vector<int> &order) {

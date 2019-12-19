@@ -394,7 +394,7 @@ public:
 \begin{lstlisting}[caption=bellmanford]
 
 // 頂点fromから頂点toへのコストcostの辺
-struct edge {
+struct bf_edge {
   int from;
   int to;
   int cost;
@@ -402,7 +402,7 @@ struct edge {
 
 class Bellman_Ford{
 public:
-  vector<edge> es; // 辺
+  vector<bf_edge> es; // 辺
   vector<int> d; // d[i]...頂点sから頂点iまでの最短距離
   int V, E; // Vは頂点数、Eは辺数
 
@@ -413,7 +413,7 @@ public:
   }
 
   void add(int from, int to, int cost) {
-    edge ed = {from, to, cost};
+    bf_edge ed = {from, to, cost};
     es.push_back(ed);
   }
 
@@ -426,7 +426,7 @@ public:
     while(true) {
       bool update = false;
       for(int i = 0; i < E; i++) {
-        edge e = es[i];
+        bf_edge e = es[i];
         if(d[e.from] != INF && d[e.to] > d[e.from] + e.cost) {
           d[e.to] = d[e.from] + e.cost;
           update = true;
@@ -442,7 +442,7 @@ public:
     }
     for (int i = 0; i < 3*V; i++) {
       for(int j = 0; j < E; j++) {
-        edge e = es[j];
+        bf_edge e = es[j];
         if(d[e.to] > d[e.from] + e.cost) {
           d[e.to] = d[e.from] + e.cost;
 
@@ -482,27 +482,27 @@ int bs(vector<int> v, int x){
 \color{black}
 \begin{lstlisting}[caption=bitsearch]
 
-int n = 5;
-
 // {0, 1, ..., n-1} の部分集合の全探索
-for (int bit = 0; bit < (1<<n); ++bit){
-  /* bit で表される集合の処理を書く */
-  
-  /* きちんとできていることを確認してみる */
-  // bit の表す集合を求める
-  vector<int> S;
-  for(int i = 0; i < n; ++i) {
-    if(bit & (1<<i) ){ // i が bit に入るかどうか
-      S.push_back(i);
+void bitsearch(int n) {
+  for(int bit = 0; bit < (1<<n); ++bit){
+    /* bit で表される集合の処理を書く */
+    
+    /* きちんとできていることを確認してみる */
+    // bit の表す集合を求める
+    vector<int> S;
+    for(int i = 0; i < n; ++i) {
+      if(bit & (1<<i) ){ // i が bit に入るかどうか
+        S.push_back(i);
+      }
     }
+    
+    // bit の表す集合の出力
+    cout << bit << \": {\";
+    for(int  i = 0; i < S.size(); ++i) {
+      cout << S[i] << \" \";
+    }
+    cout << \"}\" << endl;
   }
-  
-  // bit の表す集合の出力
-  cout << bit << \": {\";
-  for(int  i = 0; i < S.size(); ++i) {
-    cout << S[i] << \" \";
-  }
-  cout << \"}\" << endl;
 }
 
 \end{lstlisting}
@@ -576,24 +576,24 @@ class DIJKSTRA {
 public:
   int V;
 
-  struct edge {
+  struct dk_edge {
     int to;
     int cost;
   };
 
   typedef pair<int, int> PI; //firstは最短距離、secondは頂点の番号
-  vector<vector<edge> >G;
+  vector<vector<dk_edge> >G;
   vector<int> d; //これ答え。d[i]:=V[i]までの最短距離
   vector<int> prev; //経路復元
 
   DIJKSTRA(int size) {
     V = size;
-    G = vector<vector<edge> >(V);
+    G = vector<vector<dk_edge> >(V);
     prev = vector<int> (V, -1);
   }
 
   void add(int from, int to, int cost) {
-    edge e = {to, cost};
+    dk_edge e = {to, cost};
     G[from].push_back(e);
   }
 
@@ -610,7 +610,7 @@ public:
       int v = p.second;
       if(d[v] < p.first) continue;
       for(int i = 0; i < G[v].size(); i++) {
-        edge e = G[v][i];
+        dk_edge e = G[v][i];
         if(d[e.to] > d[v] + e.cost) {
           d[e.to] = d[v] + e.cost;
           prev[e.to] = v;
@@ -724,10 +724,10 @@ ll modinv(ll a) {
 \color{black}
 \begin{lstlisting}[caption=hakidashi]
 
-#define N 20 //20元連立方程式まで解ける
+#define RANK 20 //20元連立方程式まで解ける
 /*
 使用方法
-  double a[N][N+1];
+  double a[RANK][RANK+1];
   int i, n;
   a[0][0] = 2; a[0][1] = 3; a[0][2] = 1; a[0][3] = 4;
   a[1][0] = 4; a[1][1] = 1; a[1][2] = -3 ; a[1][3] = -2;
@@ -736,7 +736,7 @@ ll modinv(ll a) {
   hakidashi(a,n);
 */
 
-void hakidashi(double a[][N+1], int n) { 
+void hakidashi(double a[][RANK+1], int n) { 
   double piv, t;
   int i, j, k;
 
@@ -814,11 +814,30 @@ void hutei(int a, int b, int c, bool minus) {
 \end{lstlisting}
 
 \color{white}
+\section{icpctemplate}
+\color{black}
+\begin{lstlisting}[caption=icpctemplate]
+
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <vector>
+using namespace std;
+typedef long long int ll;
+typedef vector<int> vi;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+int main(void){}
+
+\end{lstlisting}
+
+\color{white}
 \section{indexdistance}
 \color{black}
 \begin{lstlisting}[caption=indexdistance]
 
-static_cast<int>(std::distance(std::begin(array), std::find(std::begin(array), std::end(array), c)))
+int indexdistance(vector<int> distance_array, char c) {
+  return static_cast<int>(std::distance(std::begin(distance_array), std::find(std::begin(distance_array), std::end(distance_array), c)));
+}
 
 \end{lstlisting}
 
@@ -827,7 +846,9 @@ static_cast<int>(std::distance(std::begin(array), std::find(std::begin(array), s
 \color{black}
 \begin{lstlisting}[caption=intersect]
 
-set_intersection(a.begin(), a.end(), b.begin(), b.end(), inserter(res, res.end()));
+void intersect(set<int> &Set_A, set<int> &Set_B, set<int> &Set_res) {
+  set_intersection(Set_A.begin(), Set_A.end(), Set_B.begin(), Set_B.end(), inserter(Set_res, Set_res.end()));
+}
 
 \end{lstlisting}
 
@@ -872,43 +893,44 @@ int  knapsack(int n, int W, vi w, vi v){
 \color{black}
 \begin{lstlisting}[caption=kruskal]
 
-//Union-Findも呼んで！！
-struct edge {
-  int u; //辺の片方，fromではないので二回辺を張る必要はない
-  int v; //辺のもう片方
+UnionFind uni(100);
+// Union-Findも呼んで！！そして上の書き換えて！！！
+struct kr_edge {
+  int u; // 辺の片方，fromではないので二回辺を張る必要はない
+  int v; // 辺のもう片方
   int cost;
 
   // コストの大小で順序定義
-  bool operator<(const edge& e) const {
+  bool operator<(const kr_edge& e) const {
     return cost < e.cost;
   }
 };
 class Kruskal{
   public:
 
-  bool comp(const edge& e1, const edge& e2) { //sort関数の比較関数
+  bool comp(const kr_edge& e1, const kr_edge& e2) { // sort関数の比較関数
     return e1.cost < e2.cost;
   }
 
-  vector<edge> es; //辺の集合
-  vector<edge> minst; //最小全域木に用いられる辺の集合
-  int V, E; //頂点数と辺数
+  vector<kr_edge> es; //辺の集合
+  vector<kr_edge> minst; // 最小全域木に用いられる辺の集合
+  int V, E; // 頂点数と辺数
 
   Kruskal(int v) {
     V = v;
   }
 
   void add(int v, int u, int cost){
-    edge e = {v, u, cost};
+    kr_edge e = {v, u, cost};
     es.push_back(e);
   }
 
   int kruskal() {
-    sort(es.begin(), es.end()); //edge.costが小さい順にソートされる
+    sort(es.begin(), es.end()); // kr_edge.costが小さい順にソートされる
     UnionFind uni(V); //union-findの初期化
     int res = 0;
     for(int i = 0; i < es.size(); i++) {
-      edge e = es[i];
+      kr_edge e = es[i];
       if(uni.root(e.u) != uni.root(e.v)) {
         uni.connect(e.u, e.v);
         res += e.cost;
@@ -944,7 +966,7 @@ class Kruskal{
 \color{black}
 \begin{lstlisting}[caption=lcm]
 
-ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}
+// gcdも呼ぶ！！！
 ll lcm(ll a, ll b) { return a / gcd(a,   b) * b;}
 
 \end{lstlisting}
@@ -996,7 +1018,7 @@ string lcs(string s, string t) {
 \begin{lstlisting}[caption=lis]
 
 int lis(vector<int>& v) {
-  vvi dp(1, v[0]);
+  vi dp(1, v[0]);
   for(int i = 1; i < v.size(); i++) {
     if(v[i] > dp[dp.size() - 1]) {
       dp.push_back(v[i]);
@@ -1102,7 +1124,7 @@ bool generic_next_permutation(BidirectionalIterator first, BidirectionalIterator
 \color{black}
 \begin{lstlisting}[caption=ngcd]
 
-ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}
+// gcdも呼ぶ！！！
 ll ngcd(vector<ll> a){
   ll d;
   d = a[0];
@@ -1161,8 +1183,8 @@ void quadeq(double a, double b, double c){
 \color{black}
 \begin{lstlisting}[caption=nlcm]
 
-ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}
-ll lcm(ll a, ll b) { return a / gcd(a,   b) * b;}
+// gcdも呼ぶ！！！
+// lcmも呼ぶ！！！
 int nlcm(vector<int> numbers) {
   int l;
   l = numbers[0];
@@ -1218,8 +1240,8 @@ void factorize(int x){
 \color{black}
 \begin{lstlisting}[caption=quicksort]
 
-#define N 10
-int a[N];
+#define QsoetN 10
+int a[QsoetN];
 void quicksort(int a[], int first, int last){
   int i, j, x;
 
@@ -1283,24 +1305,9 @@ void cardano(double a, double b, double c, double d){
 \color{black}
 \begin{lstlisting}[caption=stringcount]
 
-count(s.cbegin(), s.cend(), '')
-
-\end{lstlisting}
-
-\color{white}
-\section{template}
-\color{black}
-\begin{lstlisting}[caption=template]
-
-#include <iostream>
-#include <algorithm>
-#include <string>
-#include <vector>
-using namespace std;
-typedef long long int ll;
-typedef vector<int> vi;
-#define rep(i,n) for(int i = 0; i < (n); ++i)
-int main(void){}
+int stringcount(string s, char c) {
+  return count(s.cbegin(), s.cend(), c);
+}
 
 \end{lstlisting}
 
@@ -1372,7 +1379,7 @@ int main(void){
 \color{black}
 \begin{lstlisting}[caption=topologicalsort]
 
-vvi G(1000); //グラフ(リスト)
+vvi G(1000); // グラフ(リスト)
 
 // トポロジカルソート
 void rec(int v, vector<bool> &seen, vector<int> &order) {

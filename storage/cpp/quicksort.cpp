@@ -1,7 +1,7 @@
-// クイックソートですsort関数で十分です
+// クイックソートですがsort関数で十分です
 
-#define N 10
-int a[N];
+#define QsoetN 10
+int a[QsoetN];
 void quicksort(int a[], int first, int last){
 	int i, j, x;
 	x = a[(first + last)/2];

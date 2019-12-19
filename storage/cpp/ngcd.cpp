@@ -1,6 +1,6 @@
 // 要素数がnの最大公約数
 
-ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}
+// gcdも呼ぶ！！！
 ll ngcd(vector<ll> a){
 	ll d;
 	d = a[0];

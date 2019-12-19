@@ -1,4 +1,4 @@
 // 最小公倍数
 
-ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}
+// gcdも呼ぶ！！！
 ll lcm(ll a, ll b) { return a / gcd(a,   b) * b;}
