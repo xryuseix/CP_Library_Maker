@@ -1,6 +1,9 @@
 import os
 import datetime
 
+# snippetの更新
+os.system('sh weekly.sh')
+
 # Python コマンド
 os.system('python remove_index.py')
 os.system('cd json_to_header; python json_to_header.py')
