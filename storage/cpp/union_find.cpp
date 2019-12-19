@@ -22,7 +22,7 @@ public:
 
 	// AとBをくっ付ける
 	bool connect(int A, int B) {
-		//AとBを直接つなぐのではなく、root(A)にroot(B)をくっつける
+		// AとBを直接つなぐのではなく、root(A)にroot(B)をくっつける
 		A = root(A);
 		B = root(B);
 		if (A == B) {

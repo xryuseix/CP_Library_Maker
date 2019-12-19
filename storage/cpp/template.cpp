@@ -16,6 +16,7 @@
 #include <bitset>
 #include <cfloat>
 #include <unordered_set>
+#pragma GCC optimize("Ofast")
 using namespace std;
 typedef long double ld;
 typedef long long int ll;

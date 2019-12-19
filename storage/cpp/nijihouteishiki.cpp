@@ -1,10 +1,9 @@
 // 二次方程式の解を求める
 
-#include<cfloat>
 /*
 	aX^2+bX+c=0の解を求める
 	出力はこんな感じ
-	if(x1==DBL_MIN)cout<<"解なし"<<endl;
+	if(x1 == DBL_MIN)cout<<"解なし"<<endl;
 	else if(x1==DBL_MAX)cout<<"不定"<<endl;
 	else if(!i)cout<<x1<<" , "<<x2<<endl;
 	else cout<<x1<<" +- "<<x2<<"i"<<endl;

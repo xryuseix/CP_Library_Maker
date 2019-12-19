@@ -12,13 +12,13 @@
 		"body": [
 			"template <class BidirectionalIterator>",
 			"bool generic_next_permutation(BidirectionalIterator first, BidirectionalIterator last) {",
-    			"\t//要素が０又は１の場合終了",
+    			"\t// 要素が０又は１の場合終了",
     			"\tif (first == last) return false;",
     			"\tBidirectionalIterator second = first;",
     			"\t++second;",
     			"\tif (second == last) return false;",
  				"\tBidirectionalIterator i = last;",
-    			"\t--i;   //itを最後尾にセット",
+    			"\t--i;   // itを最後尾にセット",
     			"\twhile (true) {",
 					"\t\tBidirectionalIterator prev_i = i;",
 					"\t\tif (*(--i) < *prev_i) {",
@@ -87,7 +87,7 @@
 				"",
 				"\t// AとBをくっ付ける",
 				"\tbool connect(int A, int B) {",
-					"\t\t//AとBを直接つなぐのではなく、root(A)にroot(B)をくっつける",
+					"\t\t// AとBを直接つなぐのではなく、root(A)にroot(B)をくっつける",
 					"\t\tA = root(A);",
 					"\t\tB = root(B);",
 					"\t\tif (A == B) {",
@@ -116,11 +116,11 @@
 		"prefix": "eratosthenes",
 		"body": [
 			"vector<bool> eratosmake(int n,vector<bool> num){",
-				"\t//整数を列挙して素数の候補とする",
+				"\t// 整数を列挙して素数の候補とする",
 				"\tfor(int i = 0; i < n; i++) num[i] = true;",
-				"\t//0と1を消す",
+				"\t// 0と1を消す",
 				"\tnum[0] = num[1] = false;",
-				"\t//iを残してiの倍数を消していく",
+				"\t// iを残してiの倍数を消していく",
 				"\tfor(int i = 2; i < n; i++){",
 					"\t\tif(num[i]){",
 						"\t\t\tfor(int j = i + i; j < n; j += i){",
@@ -174,7 +174,7 @@
 	"sanjihouteishiki":{
 		"prefix": "sanjihouteishiki",
 		"body": [
-			"//三次方程式 ax^3+bx^2+cx+d=0を解く ",
+			"// 三次方程式 ax^3+bx^2+cx+d=0を解く ",
 			"double ans1=0, ans2=0, ans3=0;",
 
 			"void cardano(double a, double b, double c, double d){",
@@ -260,7 +260,7 @@
 	"hakidashi": {
 		"prefix": "hakidashi",
 		"body": [
-			"#define RANK 20 //20元連立方程式まで解ける",
+			"#define RANK 20 // 20元連立方程式まで解ける",
 			"/*",
 			"使用方法",
 				"\tdouble a[RANK][RANK+1];",
@@ -271,7 +271,6 @@
 				"\tn = 3;",
 				"\thakidashi(a,n);",
 			"*/",
-
 			"void hakidashi(double a[][RANK+1], int n) { ",
 				"\tdouble piv, t;",
 				"\tint i, j, k;",
@@ -297,11 +296,10 @@
 	"nijihouteishiki": {
 		"prefix": "nijihouteishiki",
 		"body": [
-			"#include<cfloat>",
 			"/*",
 				"\taX^2+bX+c=0の解を求める",
 				"\t出力はこんな感じ",
-				"\tif(x1==DBL_MIN)cout<<\"解なし\"<<endl;",
+				"\tif(x1 == DBL_MIN)cout<<\"解なし\"<<endl;",
 				"\telse if(x1==DBL_MAX)cout<<\"不定\"<<endl;",
 				"\telse if(!i)cout<<x1<<\" , \"<<x2<<endl;",
 				"\telse cout<<x1<<\" +- \"<<x2<<\"i\"<<endl;",
@@ -339,11 +337,11 @@
 	"binary_search": {
 		"prefix": "binary_search",
 		"body": [
-			"//vector vの中のn以下の数で最大のものを返す",
+			"// vector vの中のn以下の数で最大のものを返す",
 			"int bs(vector<int> v, int x){",
 			"\tint ok = -1; //これがx以下 ",
 			"\tint ng = v.size(); //x以上 ",
-			"// 問題によってokとngを入れ替える",
+			"\t// 問題によってokとngを入れ替える",
 			"\twhile(abs(ok - ng) > 1){",
 			"\t\tint mid = (ok + ng)/2;",
 			"\t\tif(v[mid] <= x) ok = mid;",
@@ -375,7 +373,7 @@
 	"mnmod": {
 		"prefix": "mnmod",
 		"body": [
-			"//xのn乗%modを計算",
+			"// xのn乗%modを計算",
 			"ll mod_pow(ll x,ll n,ll mod){",
 			"\tll res = 1;",
 			"\twhile(n > 0){",
@@ -537,7 +535,7 @@
 						"\t\t\t}",
 					"\t\t}",
 				"\t}",
-				"\t//復元",
+				"\t// 復元",
 				"\tstring ans = \"\";",
 				"\tint i = (int)s.size(), j = (int)t.size();",
 				"\twhile (i > 0 && j > 0){",
@@ -627,7 +625,7 @@
 						"\t\t\tif (!update) break;",
 					"\t\t}",
 				"\t}",
-				"\t//trueなら負の閉路が存在する",
+				"\t// trueなら負の閉路が存在する",
 				"\tbool is_nagative_loop() {",
 					"\t\tfor(int i = 0; i < V; i++) {",
 						"\t\t\td[i] = 0;",
@@ -755,8 +753,8 @@
 		"body": [
 			"class WAR_FLY {",
 			"public:",
-				"\tvvi d; //辺の数",
-				"\tint V; //頂点の数",
+				"\tvvi d; // 辺の数",
+				"\tint V; // 頂点の数",
 				"\t",
 				"\tWAR_FLY(int n) {",
 					"\t\tV = n;",
@@ -924,7 +922,7 @@
 					"\t\treturn e1.cost < e2.cost;",
 				"\t}",
 				"",
-				"\tvector<kr_edge> es; //辺の集合",
+				"\tvector<kr_edge> es; // 辺の集合",
 				"\tvector<kr_edge> minst; // 最小全域木に用いられる辺の集合",
 				"\tint V, E; // 頂点数と辺数",
 				"",
@@ -1024,7 +1022,7 @@
 				"\tcout << b << \"(\" << a << \"m + \" << y << \")\" << \" = \" << c << endl;",
 			"}"
 		],
-		"description": "不逞方程式を解く"
+		"description": "不定方程式を解く"
 	},
 	"SegmentTree": {
 		"prefix": "SegmentTree",
@@ -1390,6 +1388,7 @@
 			"#include <bitset>",
 			"#include <cfloat>",
 			"#include <unordered_set>",
+			"#pragma GCC optimize(\"Ofast\")",
 			"using namespace std;",
 			"typedef long double ld;",
 			"typedef long long int ll;",

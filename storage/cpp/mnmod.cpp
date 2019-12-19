@@ -1,6 +1,6 @@
 // mのn乗modPを計算
 
-//xのn乗%modを計算
+// xのn乗%modを計算
 ll mod_pow(ll x,ll n,ll mod){
 	ll res = 1;
 	while(n > 0){

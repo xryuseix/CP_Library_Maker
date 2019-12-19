@@ -1,13 +1,13 @@
 ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}
 template <class BidirectionalIterator>
 bool generic_next_permutation(BidirectionalIterator first, BidirectionalIterator last) {
-	//要素が０又は１の場合終了
+	// 要素が０又は１の場合終了
 	if (first == last) return false;
 	BidirectionalIterator second = first;
 	++second;
 	if (second == last) return false;
 	BidirectionalIterator i = last;
-	--i;   //itを最後尾にセット
+	--i;   // itを最後尾にセット
 	while (true) {
 		BidirectionalIterator prev_i = i;
 		if (*(--i) < *prev_i) {
@@ -57,7 +57,7 @@ public:
 
 	// AとBをくっ付ける
 	bool connect(int A, int B) {
-		//AとBを直接つなぐのではなく、root(A)にroot(B)をくっつける
+		// AとBを直接つなぐのではなく、root(A)にroot(B)をくっつける
 		A = root(A);
 		B = root(B);
 		if (A == B) {
@@ -80,11 +80,11 @@ public:
 	}
 };
 vector<bool> eratosmake(int n,vector<bool> num){
-	//整数を列挙して素数の候補とする
+	// 整数を列挙して素数の候補とする
 	for(int i = 0; i < n; i++) num[i] = true;
-	//0と1を消す
+	// 0と1を消す
 	num[0] = num[1] = false;
-	//iを残してiの倍数を消していく
+	// iを残してiの倍数を消していく
 	for(int i = 2; i < n; i++){
 		if(num[i]){
 			for(int j = i + i; j < n; j += i){
@@ -119,7 +119,7 @@ ll ngcd(vector<ll> a){
 	for(int i = 1; i < a.size() && d != 1; i++) d = gcd(a[i], d);
 	return d;
 }
-//三次方程式 ax^3+bx^2+cx+d=0を解く 
+// 三次方程式 ax^3+bx^2+cx+d=0を解く 
 double ans1=0, ans2=0, ans3=0;
 void cardano(double a, double b, double c, double d){
 	double p, q, t, a3, b3, x1, x2, x3;
@@ -186,7 +186,7 @@ bool isPrime(int x){
 	for(i = 3; i*i <= x; i += 2) if(x%i == 0) return 0;
 	return 1;
 }
-#define RANK 20 //20元連立方程式まで解ける
+#define RANK 20 // 20元連立方程式まで解ける
 /*
 使用方法
 	double a[RANK][RANK+1];
@@ -215,11 +215,10 @@ void hakidashi(double a[][RANK+1], int n) {
 		}
 	}
 }
-#include<cfloat>
 /*
 	aX^2+bX+c=0の解を求める
 	出力はこんな感じ
-	if(x1==DBL_MIN)cout<<"解なし"<<endl;
+	if(x1 == DBL_MIN)cout<<"解なし"<<endl;
 	else if(x1==DBL_MAX)cout<<"不定"<<endl;
 	else if(!i)cout<<x1<<" , "<<x2<<endl;
 	else cout<<x1<<" +- "<<x2<<"i"<<endl;
@@ -251,11 +250,11 @@ void quadeq(double a, double b, double c){
 	else if(c != 0) x1 = x2 = DBL_MIN;
 	else x1 = x2 = DBL_MAX;
 }
-//vector vの中のn以下の数で最大のものを返す
+// vector vの中のn以下の数で最大のものを返す
 int bs(vector<int> v, int x){
 	int ok = -1; //これがx以下 
 	int ng = v.size(); //x以上 
-// 問題によってokとngを入れ替える
+	// 問題によってokとngを入れ替える
 	while(abs(ok - ng) > 1){
 		int mid = (ok + ng)/2;
 		if(v[mid] <= x) ok = mid;
@@ -275,7 +274,7 @@ vector<int> enum_div(int n){
 	}
 	return ret;
 }
-//xのn乗%modを計算
+// xのn乗%modを計算
 ll mod_pow(ll x,ll n,ll mod){
 	ll res = 1;
 	while(n > 0){
@@ -394,7 +393,7 @@ string lcs(string s, string t) {
 			}
 		}
 	}
-	//復元
+	// 復元
 	string ans = "";
 	int i = (int)s.size(), j = (int)t.size();
 	while (i > 0 && j > 0){
@@ -457,7 +456,7 @@ public:
 			if (!update) break;
 		}
 	}
-	//trueなら負の閉路が存在する
+	// trueなら負の閉路が存在する
 	bool is_nagative_loop() {
 		for(int i = 0; i < V; i++) {
 			d[i] = 0;
@@ -567,8 +566,8 @@ public:
 };
 class WAR_FLY {
 public:
-	vvi d; //辺の数
-	int V; //頂点の数
+	vvi d; // 辺の数
+	int V; // 頂点の数
 	
 	WAR_FLY(int n) {
 		V = n;
@@ -700,7 +699,7 @@ class Kruskal{
 		return e1.cost < e2.cost;
 	}
 
-	vector<kr_edge> es; //辺の集合
+	vector<kr_edge> es; // 辺の集合
 	vector<kr_edge> minst; // 最小全域木に用いられる辺の集合
 	int V, E; // 頂点数と辺数
 

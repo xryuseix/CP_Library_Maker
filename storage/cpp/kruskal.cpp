@@ -19,7 +19,7 @@ class Kruskal{
 		return e1.cost < e2.cost;
 	}
 
-	vector<kr_edge> es; //辺の集合
+	vector<kr_edge> es; // 辺の集合
 	vector<kr_edge> minst; // 最小全域木に用いられる辺の集合
 	int V, E; // 頂点数と辺数
 

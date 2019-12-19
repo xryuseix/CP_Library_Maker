@@ -1,6 +1,6 @@
 // 掃き出し法
 
-#define RANK 20 //20元連立方程式まで解ける
+#define RANK 20 // 20元連立方程式まで解ける
 /*
 使用方法
 	double a[RANK][RANK+1];

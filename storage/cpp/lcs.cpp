@@ -13,7 +13,7 @@ string lcs(string s, string t) {
 			}
 		}
 	}
-	//復元
+	// 復元
 	string ans = "";
 	int i = (int)s.size(), j = (int)t.size();
 	while (i > 0 && j > 0){

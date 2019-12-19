@@ -2,8 +2,8 @@
 
 class WAR_FLY {
 public:
-	vvi d; //辺の数
-	int V; //頂点の数
+	vvi d; // 辺の数
+	int V; // 頂点の数
 	
 	WAR_FLY(int n) {
 		V = n;

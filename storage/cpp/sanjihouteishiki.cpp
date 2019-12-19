@@ -1,6 +1,6 @@
 // カルダノの公式を用いて三次方程式 ax^3+bx^2+cx+d=0 を解く 
 
-//三次方程式 ax^3+bx^2+cx+d=0を解く 
+// 三次方程式 ax^3+bx^2+cx+d=0を解く 
 double ans1=0, ans2=0, ans3=0;
 void cardano(double a, double b, double c, double d){
 	double p, q, t, a3, b3, x1, x2, x3;

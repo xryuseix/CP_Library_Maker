@@ -1,4 +1,4 @@
-// 不逞方程式を解く
+// 不定方程式を解く
 
 void hutei(int a, int b, int c, bool minus) {
 	vector<int> arr;
