@@ -35,7 +35,8 @@ typedef vector<vector<ll> > vvll;
 #define rep(i,n) for(int i = 0; i < (n); ++i)
 #define rrep(i,n) for(int i = 1; i <= (n); ++i)
 #define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
-#define fin(ans) cout << (ans) << endl
+#define fin(ans) cout << (ans) << '
+'
 #define STI(s) atoi(s.c_str())
 #define mp(p,q) make_pair(p, q)
 #define pb(n) push_back(n)
