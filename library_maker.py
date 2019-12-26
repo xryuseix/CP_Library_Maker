@@ -14,7 +14,12 @@ os.system('cd snippet_to_tex/; g++ snippet_to_latex.cpp; ./a.out')
 # 現在時刻を取得
 dt_now = datetime.datetime.now()
 
-os.system('git add --all')
-os.system('git commit -m "update at ' + str(dt_now) + '"')
-os.system('git push origin master')
+print('Input commit_message -> ', end='')
+commit_message = list(input())
 
+os.system('git add --all')
+if len(commit_message) > 0:
+    os.system('git commit -m "' + str(commit_message) + '"')
+else:
+    os.system('git commit -m "update at ' + str(dt_now) + '"')
+os.system('git push origin master')
