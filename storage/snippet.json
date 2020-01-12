@@ -441,8 +441,8 @@
 		],
 		"description": "bit全探索"
 	},
-	"combination": {
-		"prefix": "combination",
+	"Pascal": {
+		"prefix": "Pascal",
 		"body": [	
 			"bool useinit = false;",
 			"int combMax = 4000;",
@@ -456,7 +456,7 @@
 					"\t\t}",
 				"\t}",
 			"}",
-			"int nCk(int n,int k){",
+			"int Pascal(int n,int k){",
 				"\tif(!useinit){",
 					"\t\tinit();",
 					"\t\tuseinit = true;",
@@ -464,7 +464,7 @@
 				"\treturn comb[n][k];",
 			"}"
 		],
-		"description": "組み合わせ・nCkを求める"
+		"description": "組み合わせ・PascalでnCkを求める"
 	},
 	"modint": {
 		"prefix": "modint",
@@ -1438,6 +1438,40 @@
 			"}"
 		],
 		"description": "テンプレート"
+	},
+	"combination": {
+		"prefix": "combination",
+		"body": [
+			"#define MAX_NCK 101010",
+			"ll f[MAX_NCK], rf[MAX_NCK];",
+			"",
+			"// modinvも呼ぶ！！",
+			"",
+			"bool isinit = false;",
+			"",
+			"void init() {",
+			"\tf[0] = 1;",
+			"\trf[0] = modinv(1);",
+			"\tfor(int i = 1; i < MAX_NCK; i++) {",
+			"\t\tf[i] = (f[i - 1] * i) % MOD;",
+			"\t\trf[i] = modinv(f[i]);",
+			"\t}",
+			"}",
+			"",
+			"ll nCk(int n, int k) {",
+			"\tif(!isinit) {",
+			"\t\tinit();",
+			"\t\tisinit = 1;",
+			"\t}",
+			"\tll nl = f[n]; // n!",
+			"\tll nkl = rf[n - k]; // (n-k)!",
+			"\tll kl = rf[k]; // k!",
+			"\tll nkk = (nkl * kl) % MOD;",
+			"",
+			"\treturn (nl * nkk) % MOD;",
+			"}"
+		],
+		"description": "組み合わせ・逆元でnCkを求める"
 	}
 }
 

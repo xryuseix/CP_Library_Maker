@@ -1,21 +1,30 @@
-// 組み合わせ・nCkを求める
+// 組み合わせ・逆元でnCkを求める
 
-bool useinit = false;
-int combMax = 4000;
-vector<vector<ll> > comb(combMax + 2, vector<ll> (combMax + 2));
-void init(){
-	comb[0][0] = 1;
-	for(int i = 0; i <= combMax; i++){
-		for(int j = 0; j <= i; j++){
-			comb[i + 1][j] += comb[i][j];
-			comb[i + 1][j + 1] += comb[i][j];
-		}
+#define MAX_NCK 101010
+ll f[MAX_NCK], rf[MAX_NCK];
+
+// modinvも呼ぶ！！
+
+bool isinit = false;
+
+void init() {
+	f[0] = 1;
+	rf[0] = modinv(1);
+	for(int i = 1; i < MAX_NCK; i++) {
+		f[i] = (f[i - 1] * i) % MOD;
+		rf[i] = modinv(f[i]);
 	}
 }
-int nCk(int n,int k){
-	if(!useinit){
+
+ll nCk(int n, int k) {
+	if(!isinit) {
 		init();
-		useinit = true;
+		isinit = 1;
 	}
-	return comb[n][k];
+	ll nl = f[n]; // n!
+	ll nkl = rf[n - k]; // (n-k)!
+	ll kl = rf[k]; // k!
+	ll nkk = (nkl * kl) % MOD;
+
+	return (nl * nkk) % MOD;
 }
