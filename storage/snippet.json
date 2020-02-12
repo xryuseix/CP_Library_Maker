@@ -382,7 +382,7 @@
 		"body": [
 			"map<int,int> zip;",
 
-			"int compress(vector<int> &x) {",
+			"int compress(vector<int> x) {",
 		    "\tint unzip[x.size()];",
 		    "\tsort(x.begin(), x.end());",
 		    "\tx.erase(unique(x.begin(),x.end()),x.end());",

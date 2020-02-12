@@ -270,7 +270,7 @@ int stringcount(string s, char c) {
 	return count(s.cbegin(), s.cend(), c);
 }
 map<int,int> zip;
-int compress(vector<int> &x) {
+int compress(vector<int> x) {
 	int unzip[x.size()];
 	sort(x.begin(), x.end());
 	x.erase(unique(x.begin(),x.end()),x.end());

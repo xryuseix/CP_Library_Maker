@@ -1,7 +1,7 @@
 // 一次元座標圧縮
 
 map<int,int> zip;
-int compress(vector<int> &x) {
+int compress(vector<int> x) {
 	int unzip[x.size()];
 	sort(x.begin(), x.end());
 	x.erase(unique(x.begin(),x.end()),x.end());
