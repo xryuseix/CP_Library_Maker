@@ -20,7 +20,7 @@ public:
 		}
 	}
 
-	void warshall_floyd() {
+	void warshall_floyd(void) {
 		for(int k = 0; k < V; k++) {
 			for(int i = 0; i < V; i++) {
 				for(int j = 0; j < V; j++) {
@@ -34,14 +34,14 @@ public:
 		d[from][to] = cost;
 	}
 
-	bool is_negative_loop() {
+	bool is_negative_loop(void) {
 		for(int i = 0; i < V; i++) {
 			if(d[i][i] < 0) return true;
 		}
 		return false;
 	}
 
-	void show() {
+	void show(void) {
 		for(int i = 0; i < V; i++) {
 			for(int j = 0; j < V; j++) {
 				cout << d[i][j] << " ";

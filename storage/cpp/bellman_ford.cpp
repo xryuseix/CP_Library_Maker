@@ -43,7 +43,7 @@ public:
 		}
 	}
 	// trueなら負の閉路が存在する
-	bool is_nagative_loop() {
+	bool is_nagative_loop(void) {
 		for(int i = 0; i < V; i++) {
 			d[i] = 0;
 		}

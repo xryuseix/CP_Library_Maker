@@ -45,7 +45,7 @@ public:
 		}
 	}
 
-	int scc() {
+	int scc(void) {
 		used = vb((int)used.size(), false);
 		dfsline.clear();
 		for(int v = 0; v < V; v++) {
@@ -62,7 +62,7 @@ public:
 		return SubGraph;
 	}
 
-	void build() {
+	void build(void) {
 		// 縮めたグラフを構築する
 		SmallGraph = vvi(SubGraph);
 		for (int i = 0; i < Graph.size(); i++) {
@@ -80,7 +80,7 @@ public:
 		}
 	}
 
-	void show_set_to_edge() {
+	void show_set_to_edge(void) {
 		for(int i = 0; i < SmallGraph.size(); i++) {
 			cout << "集合" << i << "から出ている辺 : ";
 			for(int j = 0; j < SmallGraph[i].size(); j++) {
@@ -91,14 +91,14 @@ public:
 		cout << endl;
 	}
 
-	void show_group_of_node() {
+	void show_group_of_node(void) {
 		for(int i = 0; i < V; i++) {
 			cout << "頂点" << i << "の属するグループ : " << compo[i] << endl;
 		}
 		cout << endl;
 	}
 
-	void show_node_in_group() {
+	void show_node_in_group(void) {
 		vvi group(SubGraph);
 		for(int i = 0; i < compo.size(); i++) {
 			group[compo[i]].push_back(i);

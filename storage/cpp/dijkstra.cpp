@@ -57,7 +57,7 @@ public:
 		reverse(path.begin(),path.end());
 		return path;
 	}
-	void show() {
+	void show(void) {
 		for(int i = 0; i < d.size()-1; i ++) {
 			cout << d[i] << " ";
 		}

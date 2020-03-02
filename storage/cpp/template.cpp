@@ -54,6 +54,6 @@ const double EPS = 1e-9;
 const int INF = INT_MAX;
 const ll LLINF = 1LL<<60;
 
-int main(void){
+int main(void) {
 
 }

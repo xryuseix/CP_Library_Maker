@@ -24,12 +24,12 @@ public:
 		after_Y2 = vi(max_h);
 	}
 
-	void compress() {
+	void compress(void) {
 		after_W = exec_compress(before_X1, before_X2, after_X1, after_X2, before_W, "width");
 		after_H = exec_compress(before_Y1, before_Y2, after_Y1, after_Y2, before_H, "height");
 	}
 
-	void before_show() {
+	void before_show(void) {
 		vvc v(before_H, vc(before_W, '_'));
 		cout << "H = " << before_H << ", W = " << before_W << endl;
 		for(int i = 0; i < N; i++) {
@@ -48,7 +48,7 @@ public:
 		cout << endl;
 	}
 
-	void after_show() {
+	void after_show(void) {
 		vvc v(after_H, vc(after_W, '_'));
 		cout << "H = " << after_H << ", W = " << after_W << endl;
 		for(int i = 0; i < N; i++) {

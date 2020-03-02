@@ -13,7 +13,7 @@ class BoyerMoore {
 		text(text_), pattern(pattern_), n(text_.size()), m(pattern_.size()) {
 		compute_lambda();
 	};
-	void compute_lambda() {
+	void compute_lambda(void) {
 		for(int j = 1; j <= m; j++) {
 			lambda[pattern.at(j - 1)] = j;
 		}
@@ -25,7 +25,7 @@ class BoyerMoore {
 			return 0;
 		}
 	};
-	bool match() {
+	bool match(void) {
 		int s = 0;
 		while(s <= n - m) {
 			int j = m;

@@ -5,7 +5,7 @@ public:
 	// 単位元
 	int unit;
 	
-	Monoid() {
+	Monoid(void) {
 		// 単位元
 		unit = INF;
 	}
@@ -72,7 +72,7 @@ public:
 		return tree[tree.size()-n+k];
 	}
 
-	void show() {
+	void show(void) {
 		int ret = 2;
 		for(int i = 1; i < 2*n; i++) {
 			cout << tree[i] << " ";

@@ -32,7 +32,7 @@ class Kruskal{
 		es.push_back(e);
 	}
 
-	int kruskal() {
+	int kruskal(void) {
 		sort(es.begin(), es.end()); // kr_edge.costが小さい順にソートされる
 		UnionFind uni(V); //union-findの初期化
 		int res = 0;
@@ -47,7 +47,7 @@ class Kruskal{
 		return res;
 	}
 
-	void show(){
+	void show(void) {
 		vvi v(V, vi(V, -1));
 		for(int i = 0; i < minst.size(); i++) {
 			v[minst[i].u][minst[i].v] = minst[i].cost;

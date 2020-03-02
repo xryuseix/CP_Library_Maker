@@ -7,7 +7,7 @@ ll f[MAX_NCK], rf[MAX_NCK];
 
 bool isinit = false;
 
-void init() {
+void init(void) {
 	f[0] = 1;
 	rf[0] = modinv(1);
 	for(int i = 1; i < MAX_NCK; i++) {

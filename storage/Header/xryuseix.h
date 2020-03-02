@@ -305,7 +305,7 @@ void bitsearch(int n) {
 bool useinit = false;
 int combMax = 4000;
 vector<vector<ll> > comb(combMax + 2, vector<ll> (combMax + 2));
-void init(){
+void init(void) {
 	comb[0][0] = 1;
 	for(int i = 0; i <= combMax; i++){
 		for(int j = 0; j <= i; j++){
@@ -439,7 +439,7 @@ public:
 		}
 	}
 	// trueなら負の閉路が存在する
-	bool is_nagative_loop() {
+	bool is_nagative_loop(void) {
 		for(int i = 0; i < V; i++) {
 			d[i] = 0;
 		}
@@ -539,7 +539,7 @@ public:
 		reverse(path.begin(),path.end());
 		return path;
 	}
-	void show() {
+	void show(void) {
 		for(int i = 0; i < d.size()-1; i ++) {
 			cout << d[i] << " ";
 		}
@@ -566,7 +566,7 @@ public:
 		}
 	}
 
-	void warshall_floyd() {
+	void warshall_floyd(void) {
 		for(int k = 0; k < V; k++) {
 			for(int i = 0; i < V; i++) {
 				for(int j = 0; j < V; j++) {
@@ -580,14 +580,14 @@ public:
 		d[from][to] = cost;
 	}
 
-	bool is_negative_loop() {
+	bool is_negative_loop(void) {
 		for(int i = 0; i < V; i++) {
 			if(d[i][i] < 0) return true;
 		}
 		return false;
 	}
 
-	void show() {
+	void show(void) {
 		for(int i = 0; i < V; i++) {
 			for(int j = 0; j < V; j++) {
 				cout << d[i][j] << " ";
@@ -633,7 +633,7 @@ class BoyerMoore {
 		text(text_), pattern(pattern_), n(text_.size()), m(pattern_.size()) {
 		compute_lambda();
 	};
-	void compute_lambda() {
+	void compute_lambda(void) {
 		for(int j = 1; j <= m; j++) {
 			lambda[pattern.at(j - 1)] = j;
 		}
@@ -645,7 +645,7 @@ class BoyerMoore {
 			return 0;
 		}
 	};
-	bool match() {
+	bool match(void) {
 		int s = 0;
 		while(s <= n - m) {
 			int j = m;
@@ -694,7 +694,7 @@ class Kruskal{
 		es.push_back(e);
 	}
 
-	int kruskal() {
+	int kruskal(void) {
 		sort(es.begin(), es.end()); // kr_edge.costが小さい順にソートされる
 		UnionFind uni(V); //union-findの初期化
 		int res = 0;
@@ -709,7 +709,7 @@ class Kruskal{
 		return res;
 	}
 
-	void show(){
+	void show(void) {
 		vvi v(V, vi(V, -1));
 		for(int i = 0; i < minst.size(); i++) {
 			v[minst[i].u][minst[i].v] = minst[i].cost;
@@ -779,7 +779,7 @@ public:
 	// 単位元
 	int unit;
 	
-	Monoid() {
+	Monoid(void) {
 		// 単位元
 		unit = INF;
 	}
@@ -846,7 +846,7 @@ public:
 		return tree[tree.size()-n+k];
 	}
 
-	void show() {
+	void show(void) {
 		int ret = 2;
 		for(int i = 1; i < 2*n; i++) {
 			cout << tree[i] << " ";
@@ -935,7 +935,7 @@ public:
 		}
 	}
 
-	int scc() {
+	int scc(void) {
 		used = vb((int)used.size(), false);
 		dfsline.clear();
 		for(int v = 0; v < V; v++) {
@@ -952,7 +952,7 @@ public:
 		return SubGraph;
 	}
 
-	void build() {
+	void build(void) {
 		// 縮めたグラフを構築する
 		SmallGraph = vvi(SubGraph);
 		for (int i = 0; i < Graph.size(); i++) {
@@ -970,7 +970,7 @@ public:
 		}
 	}
 
-	void show_set_to_edge() {
+	void show_set_to_edge(void) {
 		for(int i = 0; i < SmallGraph.size(); i++) {
 			cout << "集合" << i << "から出ている辺 : ";
 			for(int j = 0; j < SmallGraph[i].size(); j++) {
@@ -981,14 +981,14 @@ public:
 		cout << endl;
 	}
 
-	void show_group_of_node() {
+	void show_group_of_node(void) {
 		for(int i = 0; i < V; i++) {
 			cout << "頂点" << i << "の属するグループ : " << compo[i] << endl;
 		}
 		cout << endl;
 	}
 
-	void show_node_in_group() {
+	void show_node_in_group(void) {
 		vvi group(SubGraph);
 		for(int i = 0; i < compo.size(); i++) {
 			group[compo[i]].push_back(i);
@@ -1027,12 +1027,12 @@ public:
 		after_Y2 = vi(max_h);
 	}
 
-	void compress() {
+	void compress(void) {
 		after_W = exec_compress(before_X1, before_X2, after_X1, after_X2, before_W, "width");
 		after_H = exec_compress(before_Y1, before_Y2, after_Y1, after_Y2, before_H, "height");
 	}
 
-	void before_show() {
+	void before_show(void) {
 		vvc v(before_H, vc(before_W, '_'));
 		cout << "H = " << before_H << ", W = " << before_W << endl;
 		for(int i = 0; i < N; i++) {
@@ -1051,7 +1051,7 @@ public:
 		cout << endl;
 	}
 
-	void after_show() {
+	void after_show(void) {
 		vvc v(after_H, vc(after_W, '_'));
 		cout << "H = " << after_H << ", W = " << after_W << endl;
 		for(int i = 0; i < N; i++) {
@@ -1105,7 +1105,7 @@ ll f[MAX_NCK], rf[MAX_NCK];
 
 bool isinit = false;
 
-void init() {
+void init(void) {
 	f[0] = 1;
 	rf[0] = modinv(1);
 	for(int i = 1; i < MAX_NCK; i++) {
