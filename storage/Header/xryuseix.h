@@ -1272,3 +1272,11 @@ double SmallestEnclosingCircle(const vector<Point> &V) {
 	}
 	return res;
 }
+
+// 直線a-bと点pの距離
+long double distance(const Point& p, const Point& a, const Point& b) {
+	long double A = b.y - a.y;
+	long double B = a.x - b.x;
+	long double C = a.y * b.x - b.y * a.x;
+	return abs(A * p.x + B * p.y + C) / sqrt(A * A + B * B);
+}

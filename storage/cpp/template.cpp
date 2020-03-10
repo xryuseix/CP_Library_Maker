@@ -47,6 +47,7 @@ typedef vector<vector<ll> > vvll;
 #define Rort(a) sort(a.rbegin(), a.rend())
 #define MATHPI acos(-1)
 #define itn int;
+#define endl '\n';
 int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
 int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
 template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
