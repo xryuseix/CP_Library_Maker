@@ -37,7 +37,8 @@ typedef vector<vector<ll> > vvll;
 #define rrep(i,n) for(int i = 1; i <= (n); ++i)
 #define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
 #define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
-#define fin(ans) cout << (ans) << '\n'
+#define fin(ans) cout << (ans) << '
+'
 #define STLL(s) strtoll(s.c_str(), NULL, 10)
 #define mp(p,q) make_pair(p, q)
 #define pb(n) push_back(n)
@@ -47,17 +48,21 @@ typedef vector<vector<ll> > vvll;
 #define Rort(a) sort(a.rbegin(), a.rend())
 #define MATHPI acos(-1)
 #define itn int;
-#define endl '\n';
+#define endl '
+';
 int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
 int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
 template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
 template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(bool b){b?fin("Yes"):fin("No");}
 struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
 const int INF = INT_MAX;
 const ll LLINF = 1LL<<60;
 const ll MOD = 1000000007;
 const double EPS = 1e-9;
 
-int main() {
 
+int main() {
+	
 }
