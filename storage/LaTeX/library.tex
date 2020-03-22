@@ -500,6 +500,55 @@ public:
 \end{lstlisting}
 
 \color{white}
+\section{bfs}
+\color{black}
+\begin{lstlisting}[caption=bfs]
+
+// 各座標に格納したい情報を構造体にする
+// 今回はX座標,Y座標,深さ(距離)を記述している
+struct Corr {
+  int x;
+  int y;
+  int depth;
+};
+queue<Corr> q;
+int bfs(vector<vector<int>> grid) {
+  // 既に探索の場所を1，探索していなかったら0を格納する配列
+  vector<vector<int>> ispassed(grid.size(), vector<int>(grid[0].size(), false));
+  // このような記述をしておくと，この後のfor文が綺麗にかける
+  int dx[8] = {1, 0, -1, 0};
+  int dy[8] = {0, 1, 0, -1};
+  while(!q.empty()) {
+    Corr now = q.front();q.pop();
+    /*
+      今いる座標は(x,y)=(now.x, now.y)で，深さ(距離)はnow.depthである
+      ここで，今いる座標がゴール(探索対象)なのか判定する
+    */
+    for(int i = 0; i < 4; i++) {
+      int nextx = now.x + dx[i];
+      int nexty = now.y + dy[i];
+
+      // 次に探索する場所のX座標がはみ出した時
+      if(nextx >= grid[0].size()) continue;
+      if(nextx < 0) continue;
+
+      // 次に探索する場所のY座標がはみ出した時
+      if(nexty >= grid.size()) continue;
+      if(nexty < 0) continue;
+
+      // 次に探索する場所が既に探索済みの場合
+      if(ispassed[nexty][nextx]) continue;
+
+      ispassed[nexty][nextx] = true;
+      Corr next = {nextx, nexty, now.depth+1};
+      q.push(next);
+    }
+  }
+}
+
+\end{lstlisting}
+
+\color{white}
 \section{binarysearch}
 \color{black}
 \begin{lstlisting}[caption=binarysearch]
@@ -789,7 +838,6 @@ ll modinv(ll a) {
 void hakidashi(double a[][RANK+1], int n) { 
   double piv, t;
   int i, j, k;
-
   for (k = 0; k < n; k++) {
     piv = a[k][k];
     for (j = k; j < n + 1; j++) {
@@ -1311,7 +1359,7 @@ bool generic_next_permutation(BidirectionalIterator first, BidirectionalIterator
   BidirectionalIterator second = first;
   ++second;
   if (second == last) return false;
-   BidirectionalIterator i = last;
+  BidirectionalIterator i = last;
   --i;   // itを最後尾にセット
   while (true) {
     BidirectionalIterator prev_i = i;
@@ -1404,7 +1452,6 @@ int nlcm(vector<int> numbers) {
   }
   return l;
 }
- 
 
 \end{lstlisting}
 
@@ -1437,7 +1484,6 @@ void factorize(int n) {
 int a[QsoetN];
 void quicksort(int a[], int first, int last){
   int i, j, x;
-
   x = a[(first + last)/2];
   i = first;
   j = last;
@@ -1462,7 +1508,6 @@ void quicksort(int a[], int first, int last){
 
 // 三次方程式 ax^3+bx^2+cx+d=0を解く 
 double ans1=0, ans2=0, ans3=0;
-
 void cardano(double a, double b, double c, double d){
   double p, q, t, a3, b3, x1, x2, x3;
   b /= (3*a); c /= a; d /= a;
@@ -1557,18 +1602,19 @@ typedef vector<vector<ll> > vvll;
 #define MATHPI acos(-1)
 #define itn int;
 #define endl '\n';
-int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
-int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+const int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+const int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
 template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
 template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
 inline string getline(){string s; getline(cin,s); return s;}
-inline void yn(bool b){b?fin(\"Yes\"):fin(\"No\");}
+inline void yn(const bool b){b?fin(\"yes\"):fin(\"no\");}
+inline void Yn(const bool b){b?fin(\"Yes\"):fin(\"No\");}
+inline void YN(const bool b){b?fin(\"YES\"):fin(\"NO\");}
 struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
 const int INF = INT_MAX;
 const ll LLINF = 1LL<<60;
 const ll MOD = 1000000007;
 const double EPS = 1e-9;
-
 
 int main() {
   
@@ -1745,7 +1791,6 @@ vector<int> enum_div(int n){
 \begin{lstlisting}[caption=zip]
 
 map<int,int> zip;
-
 int compress(vector<int> x) {
   int unzip[x.size()];
   sort(x.begin(), x.end());

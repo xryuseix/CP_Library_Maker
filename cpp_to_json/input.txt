@@ -46,18 +46,19 @@ typedef vector<vector<ll> > vvll;
 #define MATHPI acos(-1)
 #define itn int;
 #define endl '\n';
-int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
-int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+const int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+const int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
 template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
 template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
 inline string getline(){string s; getline(cin,s); return s;}
-inline void yn(bool b){b?fin("Yes"):fin("No");}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
 struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
 const int INF = INT_MAX;
 const ll LLINF = 1LL<<60;
 const ll MOD = 1000000007;
 const double EPS = 1e-9;
-
 
 int main() {
     
