@@ -244,10 +244,10 @@ int bs(vector<int> v, int x){
 	}
 	return ok;
 }
-vector<int> enum_div(int n){
-	vector<int> ret;
-	for(int i = 1 ; i*i <= n ; ++i){
-		if(n%i == 0){
+vector<ll> enum_div(ll n) {
+	vector<ll> ret;
+	for(ll i = 1 ; i*i <= n ; ++i){
+		if(n%i == 0) {
 			ret.push_back(i);
 			if(i != 1 && i*i != n){
 				ret.push_back(n/i);
@@ -774,46 +774,63 @@ void hutei(int a, int b, int c, bool minus) {
 	}
 	cout << b << "(" << a << "m + " << y << ")" << " = " << c << endl;
 }
-class Monoid {
+template <typename T>
+class Sum {
 public:
 	// 単位元
-	int unit;
+	T unit;
 	
-	Monoid(void) {
+	Sum(void) {
+		// 単位元
+		unit = 0;
+	}
+
+	// 演算関数
+	T calc(T a, T b) {
+		return a + b; 
+	}
+};
+
+template <typename T>
+struct Min {
+public:
+	// 単位元
+	T unit;
+	
+	Min(void) {
 		// 単位元
 		unit = INF;
 	}
 
 	// 演算関数
-	int calc(int a, int b) {
+	T calc(T a, T b) {
 		return min(a, b); 
 	}
 };
 
+template <typename T, class MONOID>
 class SegmentTree {
 public:
 	// セグメント木の葉の要素数
 	int n;
 
 	// セグメント木
-	vector<int> tree;
+	vector<T> tree;
 
 	// モノイド
-	Monoid mono;
+	MONOID mono;
 
-	SegmentTree(vector<int> &v) {
-		n = 1 << (int)ceil(log2(v.size()));
-		tree = vector<int>(n << 1);
-		for(int i = 0; i < v.size(); i++) {
+	SegmentTree(vector<T> &v) : n(1 << (int)ceil(log2(v.size()))), tree(vector<T>(n << 1)) {
+		for(int i = 0; i < v.size(); ++i) {
 			update(i, v[i]);
 		}
-		for(int i = v.size(); i < n; i++) {
+		for(int i = v.size(); i < n; ++i) {
 			update(i, mono.unit);
 		}
 	}
 
 	// k番目の値(0-indexed)をxに変更
-	void update(int k, int x) {
+	void update(int k, T x) {
 		k += n;
 		tree[k] = x;
 		for(k = k >> 1; k > 0; k >>= 1){
@@ -822,8 +839,8 @@ public:
 	}
 
 	// [l, r)の最小値(0-indexed)を求める．
-	int query(int l, int r) {
-		int res = mono.unit;
+	T query(int l, int r) {
+		T res = mono.unit;
 		l += n;
 		r += n;
 		while(l < r) {
@@ -838,18 +855,20 @@ public:
 		}
 		return res;
 	}
-	int operator[](int k) {
+
+	T operator[](int k) {
 		// st[i]で添字iの要素の値を返す
 		if(k - n >= 0 || k < 0) {
 			return -INF;
 		}
-		return tree[tree.size()-n+k];
+		return tree[tree.size() - n + k];
 	}
 
 	void show(void) {
 		int ret = 2;
-		for(int i = 1; i < 2*n; i++) {
-			cout << tree[i] << " ";
+		for(int i = 1; i < 2*n; ++i) {
+			if(tree[i] == mono.unit) cout << "UNIT ";
+			else cout << tree[i] << " ";
 			if(i == ret - 1) {
 				cout << endl;
 				ret <<= 1;
