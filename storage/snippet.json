@@ -1758,5 +1758,16 @@
 			"};"
 		],
 		"description": "ローリングハッシュ(文字列探索)"
+	},
+	"codeforces": {
+		"prefix": "codeforces",
+		"body": [
+			"int Q;",
+			"cin >> Q;",
+			"while(Q--) {",
+			"\t",
+			"}"
+		],
+		"description": "CodeForcesのテンプレート"
 	}
 }
