@@ -657,7 +657,6 @@
 			"// トポロジカルソート",
 			"void rec(int v, vector<bool> &seen, vector<int> &order) {",
 			"\tseen[v] = true;",
-			"\tcout<<v<<endl;",
 			"\tfor (int i= 0; i < G[v].size(); i++) {",
 			"\t\tint next = G[v][i];",
 			"\t\tif (seen[next]) continue; // 既に訪問済みなら探索しない",

@@ -487,7 +487,6 @@ vvi G(1000); // グラフ(リスト)
 // トポロジカルソート
 void rec(int v, vector<bool> &seen, vector<int> &order) {
 	seen[v] = true;
-	cout<<v<<endl;
 	for (int i= 0; i < G[v].size(); i++) {
 		int next = G[v][i];
 		if (seen[next]) continue; // 既に訪問済みなら探索しない
