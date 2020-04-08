@@ -139,8 +139,8 @@
 	"eratosthenes": {
 		"prefix": "eratosthenes",
 		"body": [
-			"vector<bool> eratosmake(int n,vector<bool> num){",
-			"\t// 整数を列挙して素数の候補とする",
+			"vector<bool> eratosmake(int n){",
+			"\tvector<bool> num(n + 1, false);",
 			"\tfor(int i = 0; i < n; i++) num[i] = true;",
 			"\t// 0と1を消す",
 			"\tnum[0] = num[1] = false;",
