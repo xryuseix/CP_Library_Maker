@@ -1,6 +1,6 @@
 // 二次元座標圧縮
 
-class Compress{
+class Compress {
 public:
 	int before_W, before_H, N;
 	vi before_X1, before_X2, before_Y1, before_Y2;
