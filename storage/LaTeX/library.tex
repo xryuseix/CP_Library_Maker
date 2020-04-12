@@ -1491,6 +1491,20 @@ class Kruskal{
 \end{lstlisting}
 
 \color{white}
+\section{lambdaSort}
+\color{black}
+\begin{lstlisting}[caption=lambdaSort]
+
+template<class T>
+void lambdaSort(vector<T> &v) {
+  sort(all(v), [](auto const& l, auto const& r) {
+    return l.fi > r.fi; // このbool式が成り立つ時入れ替える
+  });
+}
+
+\end{lstlisting}
+
+\color{white}
 \section{lcm}
 \color{black}
 \begin{lstlisting}[caption=lcm]
@@ -1740,6 +1754,22 @@ void factorize(int n) {
   if(n != 1) {
     prime[n] = 1;
   }
+}
+
+\end{lstlisting}
+
+\color{white}
+\section{printvector}
+\color{black}
+\begin{lstlisting}[caption=printvector]
+
+template<class T>
+void print_vector(vector<T> &v) {
+  rep(i, v.size()) {
+    if(!i) cout << v[i];
+    else cout << \" \" << v[i];
+  }
+  cout << endl;
 }
 
 \end{lstlisting}

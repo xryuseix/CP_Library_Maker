@@ -1959,5 +1959,31 @@
 			"};"
 		],
 		"description": "遅延評価セグメント木"
+	},
+	"print_vector": {
+		"prefix": "print_vector",
+		"body": [
+			"template<class T>",
+			"void print_vector(vector<T> &v) {",
+			"\trep(i, v.size()) {",
+			"\t\tif(!i) cout << v[i];",
+			"\t\telse cout << \" \" << v[i];",
+			"\t}",
+			"\tcout << endl;",
+			"}"
+		],
+		"description": "配列の表示"
+	},
+	"lambdaSort": {
+		"prefix": "lambdaSort",
+		"body": [
+			"template<class T>",
+			"void lambdaSort(vector<T> &v) {",
+			"\tsort(all(v), [](auto const& l, auto const& r) {",
+			"\t\treturn l.fi > r.fi; // このbool式が成り立つ時入れ替える",
+			"\t});",
+			"}"
+		],
+		"description": "ラムダ式を使ったソート"
 	}
 }
