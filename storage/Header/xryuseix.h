@@ -27,9 +27,8 @@ bool generic_next_permutation(BidirectionalIterator first, BidirectionalIterator
 ll lcm(ll a, ll b) { return a / gcd(a,   b) * b;}
 // gcdも呼ぶ！！！
 // lcmも呼ぶ！！！
-int nlcm(vector<int> numbers) {
-	int l;
-	l = numbers[0];
+ll nlcm(vector<ll> numbers) {
+	ll l = numbers[0];
 	for (int i = 1; i < numbers.size(); i++) {
 		l = lcm(l, numbers[i]);
 	}
@@ -174,8 +173,8 @@ void cardano(double a, double b, double c, double d){
 	}
 }
 map<ll, ll> prime;
-void factorize(int n) {
-	for(int i = 2; i * i <= n; i++) {
+void factorize(ll n) {
+	for(ll i = 2; i * i <= n; i++) {
 		while(n % i == 0) {
 			prime[i]++;
 			n /= i;
@@ -185,12 +184,11 @@ void factorize(int n) {
 		prime[n] = 1;
 	}
 }
-bool isPrime(int x){
-	int i;
+bool isPrime(ll x){
 	if(x < 2)return 0;
 	else if(x == 2) return 1;
 	if(x%2 == 0) return 0;
-	for(i = 3; i*i <= x; i += 2) if(x%i == 0) return 0;
+	for(ll i = 3; i*i <= x; i += 2) if(x%i == 0) return 0;
 	return 1;
 }
 #define RANK 20 // 20元連立方程式まで解ける
@@ -258,7 +256,7 @@ void quadeq(double a, double b, double c){
 	else x1 = x2 = DBL_MAX;
 }
 // vector vの中のn以下の数で最大のものを返す
-int bs(vector<int> v, int x){
+int bs(vector<int> &v, int x){
 	int ok = -1; //これがx以下 
 	int ng = v.size(); //x以上 
 	// 問題によってokとngを入れ替える
@@ -346,22 +344,71 @@ int Pascal(int n,int k){
 	}
 	return comb[n][k];
 }
-const int mod = 1000000007;
 struct mint {
 	ll x;
-	mint(ll x=0):x(x%mod){}
+	mint(ll _x = 0):x((_x % MOD + MOD) % MOD) {}
+
+	/* 初期化子 */
+	mint operator+() const {
+	return mint(x);
+	}
+	mint operator-() const {
+	return mint(-x);
+	}
+
+	/* 代入演算子 */
 	mint& operator+=(const mint a) {
-		if ((x += a.x) >= mod) x -= mod;
+		if ((x += a.x) >= MOD) x -= MOD;
 		return *this;
 	}
 	mint& operator-=(const mint a) {
-		if ((x += mod-a.x) >= mod) x -= mod;
+		if ((x += MOD - a.x) >= MOD) x -= MOD;
 		return *this;
 	}
 	mint& operator*=(const mint a) {
-		(x *= a.x) %= mod;
+		(x *= a.x) %= MOD;
 		return *this;
 	}
+	mint& operator/=(const mint a) {
+		x *= modinv(a).x;
+		return (*this);
+	}
+	mint& operator%=(const mint a) {
+		x %= a.x;
+		return (*this);
+	}
+	mint& operator++() {
+		++x;
+		if(x >= MOD) x -= MOD;
+		return *this;
+	}
+	mint& operator--() {
+		--x;
+		if(x <0) x += MOD;
+		return *this;
+	}
+	mint& operator&=(const mint a) {
+		x &= a.x;
+		return (*this);
+	}
+	mint& operator|=(const mint a) {
+		x |= a.x;
+		return (*this);
+	}
+	mint& operator^=(const mint a) {
+		x ^= a.x;
+		return (*this);
+	}
+	mint& operator<<=(const mint a) {
+		x *= pow(2, a).x;
+		return (*this);
+	}
+	mint& operator>>=(const mint a) {
+		x /= pow(2, a).x;
+		return (*this);
+	}
+
+	/* 算術演算子 */
 	mint operator+(const mint a) const {
 		mint res(*this);
 		return res+=a;
@@ -373,6 +420,79 @@ struct mint {
 	mint operator*(const mint a) const {
 		mint res(*this);
 		return res*=a;
+	}
+	mint operator/(const mint a) const {
+		mint res(*this);
+		return res/=a;
+	}
+	mint operator%(const mint a) const {
+		mint res(*this);
+		return res%=a;
+	}
+	mint operator&(const mint a) const {
+		mint res(*this);
+		return res&=a;
+	}
+	mint operator|(const mint a) const {
+		mint res(*this);
+		return res|=a;
+	}
+	mint operator^(const mint a) const {
+		mint res(*this);
+		return res^=a;
+	}
+	mint operator<<(const mint a) const {
+		mint res(*this);
+		return res<<=a;
+	}
+	mint operator>>(const mint a) const {
+		mint res(*this);
+		return res>>=a;
+	}
+
+	/* 条件演算子 */
+	bool operator==(const mint a) const noexcept {
+		return x == a.x;
+	}
+	bool operator!=(const mint a) const noexcept {
+		return x != a.x;
+	}
+	bool operator<(const mint a) const noexcept {
+		return x < a.x;
+	}
+	bool operator>(const mint a) const noexcept {
+		return x > a.x;
+	}
+	bool operator<=(const mint a) const noexcept {
+		return x <= a.x;
+	}
+	bool operator>=(const mint a) const noexcept {
+		return x >= a.x;
+	}
+
+	/* ストリーム挿入演算子 */
+	friend istream& operator>>(istream& is, mint& m) {
+		is >> m.x;
+		m.x = (m.x % MOD + MOD) % MOD;
+		return is;
+	}
+	friend ostream& operator<<(ostream& os, const mint& m) {
+		os << m.x;
+		return os;
+	}
+
+	/* その他の関数 */
+	mint modinv(mint a) {
+		return pow(a, MOD - 2);
+	}
+	mint pow(mint x, mint n){
+		mint res = 1;
+		while(n.x > 0){
+			if((n%2).x) res *= x;
+			x *= x;
+			n.x /= 2;
+		}
+		return res;
 	}
 };
 int  knapsack(int n, int W, vi w, vi v){
@@ -1661,3 +1781,31 @@ public:
 		}
 	}
 };
+#define MAX_MINT_NCK 201010
+mint f[MAX_MINT_NCK], rf[MAX_MINT_NCK];
+
+bool isinit = false;
+
+void init() {
+	f[0] = 1;
+	rf[0] = 1;
+	for(int i = 1; i < MAX_MINT_NCK; i++) {
+		f[i] = f[i - 1] * i;
+		// rf[i] = modinv(f[i].x);
+		rf[i] = f[i].pow(f[i], MOD - 2);
+	}
+}
+
+mint nCk(mint n, mint k) {
+	if(n < k) return 0;
+	if(!isinit) {
+		init();
+		isinit = 1;
+	}
+	mint nl = f[n.x]; // n!
+	mint nkl = rf[n.x - k.x]; // (n-k)!
+	mint kl = rf[k.x]; // k!
+	mint nkk = (nkl.x * kl.x);
+
+	return nl * nkk;
+}

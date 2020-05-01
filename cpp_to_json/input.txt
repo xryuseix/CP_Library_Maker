@@ -1,57 +1,151 @@
-class Bridge {
-    int N, num = 0;
-    vvi G;
-    vi pre, low;
-    vb isPassed;
-    vpii bridges;
+struct mint {
+    ll x;
+    mint(ll _x = 0):x((_x % MOD + MOD) % MOD) {}
 
-    int culcLow(const int v, const int bef) {
-        int nowLow = num;
-        low[v] = pre[v] = nowLow;
-        for(auto ne : G[v]) {
-            if(ne == bef) continue;
-            if(ne == 0) {
-                low[0] = -1;
-            }
-            if(pre[ne] == -1) {
-                num++;
-                culcLow(ne, v);
-            }
-            chmin(nowLow, low[ne]);
+    /* 初期化子 */
+    mint operator+() const {
+      return mint(x);
+    }
+    mint operator-() const {
+      return mint(-x);
+    }
+
+    /* 代入演算子 */
+    mint& operator+=(const mint a) {
+        if ((x += a.x) >= MOD) x -= MOD;
+        return *this;
+    }
+    mint& operator-=(const mint a) {
+        if ((x += MOD - a.x) >= MOD) x -= MOD;
+        return *this;
+    }
+    mint& operator*=(const mint a) {
+        (x *= a.x) %= MOD;
+        return *this;
+    }
+    mint& operator/=(const mint a) {
+        x *= modinv(a).x;
+        return (*this);
+    }
+    mint& operator%=(const mint a) {
+        x %= a.x;
+        return (*this);
+    }
+    mint& operator++() {
+        ++x;
+        if(x >= MOD) x -= MOD;
+        return *this;
+    }
+    mint& operator--() {
+        --x;
+        if(x <0) x += MOD;
+        return *this;
+    }
+    mint& operator&=(const mint a) {
+        x &= a.x;
+        return (*this);
+    }
+    mint& operator|=(const mint a) {
+        x |= a.x;
+        return (*this);
+    }
+    mint& operator^=(const mint a) {
+        x ^= a.x;
+        return (*this);
+    }
+    mint& operator<<=(const mint a) {
+        x *= pow(2, a).x;
+        return (*this);
+    }
+    mint& operator>>=(const mint a) {
+        x /= pow(2, a).x;
+        return (*this);
+    }
+
+    /* 算術演算子 */
+    mint operator+(const mint a) const {
+        mint res(*this);
+        return res+=a;
+    }
+    mint operator-(const mint a) const {
+        mint res(*this);
+        return res-=a;
+    }
+    mint operator*(const mint a) const {
+        mint res(*this);
+        return res*=a;
+    }
+    mint operator/(const mint a) const {
+        mint res(*this);
+        return res/=a;
+    }
+    mint operator%(const mint a) const {
+        mint res(*this);
+        return res%=a;
+    }
+    mint operator&(const mint a) const {
+        mint res(*this);
+        return res&=a;
+    }
+    mint operator|(const mint a) const {
+        mint res(*this);
+        return res|=a;
+    }
+    mint operator^(const mint a) const {
+        mint res(*this);
+        return res^=a;
+    }
+    mint operator<<(const mint a) const {
+        mint res(*this);
+        return res<<=a;
+    }
+    mint operator>>(const mint a) const {
+        mint res(*this);
+        return res>>=a;
+    }
+
+    /* 条件演算子 */
+    bool operator==(const mint a) const noexcept {
+        return x == a.x;
+    }
+    bool operator!=(const mint a) const noexcept {
+        return x != a.x;
+    }
+    bool operator<(const mint a) const noexcept {
+        return x < a.x;
+    }
+    bool operator>(const mint a) const noexcept {
+        return x > a.x;
+    }
+    bool operator<=(const mint a) const noexcept {
+        return x <= a.x;
+    }
+    bool operator>=(const mint a) const noexcept {
+        return x >= a.x;
+    }
+
+    /* ストリーム挿入演算子 */
+    friend istream& operator>>(istream& is, mint& m) {
+        is >> m.x;
+        m.x = (m.x % MOD + MOD) % MOD;
+        return is;
+    }
+    friend ostream& operator<<(ostream& os, const mint& m) {
+        os << m.x;
+        return os;
+    }
+
+    /* その他の関数 */
+    mint modinv(mint a) {
+        return pow(a, MOD - 2);
+    }
+    mint pow(mint x, mint n){
+        mint res = 1;
+        while(n.x > 0){
+            if((n%2).x) res *= x;
+            x *= x;
+            n.x /= 2;
         }
-        return low[v] = nowLow;
-    }
-
-    void traceGraph(const int v, const int bef) {
-        for(auto ne : G[v]) {
-            if(ne == bef) continue;
-            if(!isPassed[ne]) {
-                if(low[ne] == pre[ne]) {
-                    bridges.emplace_back(min(v, ne), max(v, ne));
-                }
-                isPassed[ne] = true;
-                traceGraph(ne, v);
-            }
-        }
-    }
-
-public:
-    Bridge(const int _n, const vvi _G) : N(_n), G(_G) {
-        pre = vi(N, -1);
-        low = vi(N, INF);
-        isPassed = vb(N, false);
-        isPassed[0] = true;
-    }
-
-    void findBridges() {
-        culcLow(0, -1);
-        traceGraph(0, -1);
-        Sort(bridges);
-    }
-
-    void show() {
-        for(auto p : bridges) {
-            cout << p.fi << " " << p.se << endl; 
-        }
+        return res;
     }
 };
