@@ -716,25 +716,8 @@ public:
   }
 
   // s番目の頂点から各頂点への最短距離を求める
-  void shortest_path(int s) {
-    for(int i = 0; i < V; i++) {
-      d[i] = INF;
-    }
-    d[s] = 0;
-    while(true) {
-      bool update = false;
-      for(int i = 0; i < E; i++) {
-        bf_edge e = es[i];
-        if(d[e.from] != INF && d[e.to] > d[e.from] + e.cost) {
-          d[e.to] = d[e.from] + e.cost;
-          update = true;
-        }
-      }
-      if (!update) break;
-    }
-  }
   // trueなら負の閉路が存在する
-  bool is_nagative_loop(void) {
+  bool shortest_path(int s) {
     for(int i = 0; i < V; i++) {
       d[i] = 0;
     }
