@@ -1,17 +1,18 @@
 // ダイクストラ法
 
+template <typename T>
 class DIJKSTRA {
 public:
 	int V;
 
 	struct dk_edge {
 		int to;
-		int cost;
+		T cost;
 	};
 
-	typedef pair<int, int> PI; //firstは最短距離、secondは頂点の番号
+	typedef pair<T, int> PI; //firstは最短距離、secondは頂点の番号
 	vector<vector<dk_edge> >G;
-	vector<int> d; //これ答え。d[i]:=V[i]までの最短距離
+	vector<T> d; //これ答え。d[i]:=V[i]までの最短距離
 	vector<int> prev; //経路復元
 
 	DIJKSTRA(int size) {
@@ -20,7 +21,7 @@ public:
 		prev = vector<int> (V, -1);
 	}
 
-	void add(int from, int to, int cost) {
+	void add(int from, int to, T cost) {
 		dk_edge e = {to, cost};
 		G[from].push_back(e);
 	}
@@ -28,7 +29,7 @@ public:
 	void dijkstra(int s) {
 		//greater<P>を指定することでfirstが小さい順に取り出せるようにする
 		priority_queue<PI, vector<PI>, greater<PI> > que;
-		d = vector<int> (V, INF);
+		d = vector<T> (V, LLINF);
 		d[s] = 0;
 		que.push(PI(0, s));
 

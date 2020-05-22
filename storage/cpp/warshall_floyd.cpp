@@ -1,20 +1,21 @@
 // ワーシャルフロイド法
 
+template <typename T>
 class WAR_FLY {
 public:
-	vvi d; // 辺の数
+	vector<vector<T>> d; // 辺の数
 	int V; // 頂点の数
 	
 	WAR_FLY(int n) {
 		V = n;
-		d = vector<vector<int> > (n,vector<int>(n));
+		d = vector<vector<T> > (n,vector<T>(n));
 		for(int i = 0; i < V; i++) {
 			for(int j = 0; j < V; j++) {
 				if(i == j) {
 					d[i][j] = 0;
 				}
 				else {
-					d[i][j] = INF;
+					d[i][j] = LLINF;
 				}
 			}
 		}
@@ -30,7 +31,7 @@ public:
 		}
 	}
 
-	void add(int from, int to, int cost) {
+	void add(int from, int to, T cost) {
 		d[from][to] = cost;
 	}
 

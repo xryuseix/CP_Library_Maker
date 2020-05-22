@@ -1,6 +1,6 @@
 // ナップサック問題
 
-int  knapsack(int n, int W, vi w, vi v){
+int knapsack(int n, int W, vi w, vi v) {
 	vvi dp(n + 1, vi (W + 1, 0));
 	for(int i = 1; i <= n; i++) {
 		for(int j = 1; j <= W; j++) {

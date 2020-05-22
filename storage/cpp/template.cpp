@@ -16,8 +16,9 @@
 #include <string>
 #include <bitset>
 #include <cfloat>
+#include <random>
+#include <iomanip>
 #include <unordered_set>
-#pragma GCC optimize("Ofast")
 using namespace std;
 typedef long double ld;
 typedef long long int ll;
@@ -29,12 +30,17 @@ typedef vector<double> vd;
 typedef vector<string> vs;
 typedef vector<ll> vll;
 typedef vector<pair<int,int> > vpii;
-typedef vector<vector<int> > vvi;
-typedef vector<vector<char> > vvc;
-typedef vector<vector<string> > vvs;
-typedef vector<vector<ll> > vvll;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
 #define rep(i,n) for(int i = 0; i < (n); ++i)
 #define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
 #define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
 #define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
 #define fin(ans) cout << (ans) << '
@@ -47,22 +53,23 @@ typedef vector<vector<ll> > vvll;
 #define Sort(a) sort(a.begin(), a.end())
 #define Rort(a) sort(a.rbegin(), a.rend())
 #define MATHPI acos(-1)
-#define itn int;
-#define endl '
-';
-const int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
-const int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+#define fi first
+#define se second
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
 template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
 template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'
+':' ');}}
 inline string getline(){string s; getline(cin,s); return s;}
 inline void yn(const bool b){b?fin("yes"):fin("no");}
 inline void Yn(const bool b){b?fin("Yes"):fin("No");}
 inline void YN(const bool b){b?fin("YES"):fin("NO");}
 struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
 const int INF = INT_MAX;
-const ll LLINF = 1LL<<60;
-const ll MOD = 1000000007;
-const double EPS = 1e-9;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr double EPS = 1e-9;
 
 int main() {
 	

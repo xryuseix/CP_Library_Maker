@@ -256,7 +256,7 @@ void quadeq(double a, double b, double c){
 	else x1 = x2 = DBL_MAX;
 }
 // vector vの中のn以下の数で最大のものを返す
-int bs(vector<int> &v, int x){
+int bs(vector<ll> &v, ll x){
 	int ok = -1; //これがx以下 
 	int ng = v.size(); //x以上 
 	// 問題によってokとngを入れ替える
@@ -280,9 +280,9 @@ vector<ll> enum_div(ll n) {
 	return ret;
 }
 // xのn乗%modを計算
-ll mod_pow(ll x,ll n,ll mod){
+ll mod_pow(ll x, ll n, ll mod = MOD) {
 	ll res = 1;
-	while(n > 0){
+	while(n > 0) {
 		if(n & 1) res = res*x%mod;
 		x = x*x%mod;
 		n >>= 1;
@@ -292,8 +292,8 @@ ll mod_pow(ll x,ll n,ll mod){
 int stringcount(string s, char c) {
 	return count(s.cbegin(), s.cend(), c);
 }
-map<int,int> zip;
-int compress(vector<int> x) {
+map<ll, ll> zip;
+int compress(vector<ll> x) {
 	int unzip[x.size()];
 	sort(x.begin(), x.end());
 	x.erase(unique(x.begin(),x.end()),x.end());
@@ -302,28 +302,6 @@ int compress(vector<int> x) {
 		unzip[i] = x[i];
 	}
 	return x.size();
-}
-// {0, 1, ..., n-1} の部分集合の全探索
-void bitsearch(int n) {
-	for(int bit = 0; bit < (1<<n); ++bit){
-		/* bit で表される集合の処理を書く */
-		
-		/* きちんとできていることを確認してみる */
-		// bit の表す集合を求める
-		vector<int> S;
-		for(int i = 0; i < n; ++i) {
-			if(bit & (1<<i) ){ // i が bit に入るかどうか
-				S.push_back(i);
-			}
-		}
-		
-		// bit の表す集合の出力
-		cout << bit << ": {";
-		for(int  i = 0; i < S.size(); ++i) {
-			cout << S[i] << " ";
-		}
-		cout << "}" << endl;
-	}
 }
 bool useinit = false;
 int combMax = 4000;
@@ -383,8 +361,8 @@ struct mint {
 		return *this;
 	}
 	mint& operator--() {
+		if(!x) x += MOD;
 		--x;
-		if(x <0) x += MOD;
 		return *this;
 	}
 	mint& operator&=(const mint a) {
@@ -495,7 +473,7 @@ struct mint {
 		return res;
 	}
 };
-int  knapsack(int n, int W, vi w, vi v){
+int knapsack(int n, int W, vi w, vi v) {
 	vvi dp(n + 1, vi (W + 1, 0));
 	for(int i = 1; i <= n; i++) {
 		for(int j = 1; j <= W; j++) {
@@ -609,18 +587,19 @@ vector<int> topo(int N) { // Nはノード数
 	reverse(order.begin(), order.end());
 	return order;
 }
+template <typename T>
 class DIJKSTRA {
 public:
 	int V;
 
 	struct dk_edge {
 		int to;
-		int cost;
+		T cost;
 	};
 
-	typedef pair<int, int> PI; //firstは最短距離、secondは頂点の番号
+	typedef pair<T, int> PI; //firstは最短距離、secondは頂点の番号
 	vector<vector<dk_edge> >G;
-	vector<int> d; //これ答え。d[i]:=V[i]までの最短距離
+	vector<T> d; //これ答え。d[i]:=V[i]までの最短距離
 	vector<int> prev; //経路復元
 
 	DIJKSTRA(int size) {
@@ -629,7 +608,7 @@ public:
 		prev = vector<int> (V, -1);
 	}
 
-	void add(int from, int to, int cost) {
+	void add(int from, int to, T cost) {
 		dk_edge e = {to, cost};
 		G[from].push_back(e);
 	}
@@ -637,7 +616,7 @@ public:
 	void dijkstra(int s) {
 		//greater<P>を指定することでfirstが小さい順に取り出せるようにする
 		priority_queue<PI, vector<PI>, greater<PI> > que;
-		d = vector<int> (V, INF);
+		d = vector<T> (V, LLINF);
 		d[s] = 0;
 		que.push(PI(0, s));
 
@@ -673,21 +652,22 @@ public:
 		cout << d[d.size()-1] << endl;
 	}
 };
+template <typename T>
 class WAR_FLY {
 public:
-	vvi d; // 辺の数
+	vector<vector<T>> d; // 辺の数
 	int V; // 頂点の数
 	
 	WAR_FLY(int n) {
 		V = n;
-		d = vector<vector<int> > (n,vector<int>(n));
+		d = vector<vector<T> > (n,vector<T>(n));
 		for(int i = 0; i < V; i++) {
 			for(int j = 0; j < V; j++) {
 				if(i == j) {
 					d[i][j] = 0;
 				}
 				else {
-					d[i][j] = INF;
+					d[i][j] = LLINF;
 				}
 			}
 		}
@@ -703,7 +683,7 @@ public:
 		}
 	}
 
-	void add(int from, int to, int cost) {
+	void add(int from, int to, T cost) {
 		d[from][to] = cost;
 	}
 
@@ -1004,17 +984,17 @@ public:
 		cout << endl;
 	}
 };
-int lis(vector<int>& v) {
+int lis(vi& v) {
 	vi dp(1, v[0]);
 	for(int i = 1; i < v.size(); i++) {
 		if(v[i] > dp[dp.size() - 1]) {
 			dp.push_back(v[i]);
 		} else {
-			int pos = distance(lower_bound(dp.begin(), dp.end(), v[i]), dp.begin());
+			int pos = distance(dp.begin(), lower_bound(dp.begin(), dp.end(), v[i]));
 			dp[pos] = v[i];
 		}
 	}
-	return (int)dp.size();
+	return dp.size();
 }
 int conlis(vector<int>& v) {
 	vi dp(v.size() + 1, 0);
@@ -1244,7 +1224,7 @@ private:
 		return zs.size();
 	}
 };
-#define MAX_NCK 101010
+#define MAX_NCK 201010
 ll f[MAX_NCK], rf[MAX_NCK];
 
 // modinvも呼ぶ！！
@@ -1792,3 +1772,32 @@ mint nCk(mint n, mint k) {
 
 	return nl * nkk;
 }
+template <typename T>
+class BIT {
+	int N;
+	vector<T> tree;
+public:
+	BIT(vector<T> &v) : N(v.size()), tree(vector<T>(v.size() + 1)) {
+		rep(i, v.size()) {
+			add(i, v[i]);
+		}
+	}
+
+	void add(int i, T x = 1) {
+		for (++i; i <= N; i += i&-i) {
+			tree[i] += x;
+		}
+	}
+
+	T sum(int i) { // [0,i)の和
+		T x = 0;
+		for (; i; i -= i&-i) {
+			x += tree[i];
+		}
+		return x;
+	}
+
+	T sum(int l, int r) { // [l,r)の和
+		return sum(r) - sum(l);
+	}
+};

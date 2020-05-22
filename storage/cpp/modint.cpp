@@ -39,8 +39,8 @@ struct mint {
 		return *this;
 	}
 	mint& operator--() {
+		if(!x) x += MOD;
 		--x;
-		if(x <0) x += MOD;
 		return *this;
 	}
 	mint& operator&=(const mint a) {

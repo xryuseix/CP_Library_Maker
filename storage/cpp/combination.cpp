@@ -1,6 +1,6 @@
 // 組み合わせ・逆元でnCkを求める
 
-#define MAX_NCK 101010
+#define MAX_NCK 201010
 ll f[MAX_NCK], rf[MAX_NCK];
 
 // modinvも呼ぶ！！
