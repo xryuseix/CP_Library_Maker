@@ -1,4 +1,4 @@
-// Continue LIS(最長連続増加部分列)を解く
+// Continue LIS(最長連続増加部分列)
 
 int conlis(vector<int>& v) {
 	vi dp(v.size() + 1, 0);

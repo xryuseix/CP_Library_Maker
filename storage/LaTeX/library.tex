@@ -40,43 +40,6 @@
 
 
 \color{white}
-\section{BIT}
-\color{black}
-\begin{lstlisting}[caption=BIT]
-
-template <typename T>
-class BIT {
-  int N;
-  vector<T> tree;
-public:
-  BIT(vector<T> &v) : N(v.size()), tree(vector<T>(v.size() + 1)) {
-    rep(i, v.size()) {
-      add(i, v[i]);
-    }
-  }
-
-  void add(int i, T x = 1) {
-    for (++i; i <= N; i += i&-i) {
-      tree[i] += x;
-    }
-  }
-
-  T sum(int i) { // [0,i)の和
-    T x = 0;
-    for (; i; i -= i&-i) {
-      x += tree[i];
-    }
-    return x;
-  }
-
-  T sum(int l, int r) { // [l,r)の和
-    return sum(r) - sum(l);
-  }
-};
-
-\end{lstlisting}
-
-\color{white}
 \section{BoyerMoore}
 \color{black}
 \begin{lstlisting}[caption=BoyerMoore]
@@ -845,6 +808,43 @@ int bs(vector<ll> &v, ll x){
 \end{lstlisting}
 
 \color{white}
+\section{bit}
+\color{black}
+\begin{lstlisting}[caption=bit]
+
+template <typename T>
+class BIT {
+  int N;
+  vector<T> tree;
+public:
+  BIT(vector<T> &v) : N(v.size()), tree(vector<T>(v.size() + 1)) {
+    rep(i, v.size()) {
+      add(i, v[i]);
+    }
+  }
+
+  void add(int i, T x = 1) {
+    for (++i; i <= N; i += i&-i) {
+      tree[i] += x;
+    }
+  }
+
+  T sum(int i) { // [0,i)の和
+    T x = 0;
+    for (; i; i -= i&-i) {
+      x += tree[i];
+    }
+    return x;
+  }
+
+  T sum(int l, int r) { // [l,r)の和
+    return sum(r) - sum(l);
+  }
+};
+
+\end{lstlisting}
+
+\color{white}
 \section{bridge}
 \color{black}
 \begin{lstlisting}[caption=bridge]
@@ -1556,6 +1556,94 @@ void lambdaSort(vector<T> &v) {
     return l.fi > r.fi; // このbool式が成り立つ時入れ替える
   });
 }
+
+\end{lstlisting}
+
+\color{white}
+\section{lca}
+\color{black}
+\begin{lstlisting}[caption=lca]
+
+class LCA {
+  int n;
+  int MAX;
+  vvi doubling, v;
+
+  void init() {
+    rep(i, n) {
+      for(auto j : v[i]) {
+        doubling[0][j] = i;
+      }
+    }
+    for(int i = 1; i < MAX; i++) {
+      rep(j, n) {
+        doubling[i][j] = doubling[i - 1][doubling[i - 1][j]];
+      }
+    }
+    depth[0] = 0;
+    dfs(0, -1);
+  }
+
+  void dfs(const int crrPos, const int befPos) {
+    for(auto i : v[crrPos]) {
+      if(i == befPos || depth[i] != -1) {
+        continue;
+      }
+      depth[i] = depth[crrPos] + 1;
+      dfs(i, crrPos);
+    }
+  }
+
+public:
+  vi depth;
+
+  // vは0が根のbfs木にする．親->子のように辺を張る．
+  LCA(vvi &_v) : v(_v), n(_v.size()) {
+    MAX = ceil(log2(n));
+    doubling = vvi(MAX, vi(n, 0));
+    depth = vi(n, -1);
+    init();
+  }
+
+  void show(const int height = 0) {
+    rep(i, ((!height)?MAX:height)) {
+      dump(doubling[i]);
+    }
+    dump(depth);
+  }
+
+  // ダブリングでVのnum個親の祖先を調べる
+  int doublingNode(int V, const int num) {
+    rep(i, MAX) {
+      if((1LL<<i) & num) {
+        V = doubling[i][V];
+      }
+    }
+    return V;
+  }
+
+  int lca(int A, int B) {
+    // Aのが深い位置にあるようにする
+    if(depth[A] < depth[B]) {
+      swap(A, B);
+    }
+    A = doublingNode(A, depth[A] - depth[B]);
+    if(A == B) {
+      return A;
+    }
+    
+    int ng = -1;
+    int ok = depth[A] + 1;
+    while(abs(ng - ok) > 1) {
+      int mid = (ng + ok)/2;
+      if(doublingNode(A, mid) != doublingNode(B, mid)) {
+        ng = mid;
+      }
+      else ok = mid;
+    }
+    return  doublingNode(A, ng + 1);
+  }
+};
 
 \end{lstlisting}
 

@@ -1,4 +1,4 @@
-// BoyerMoore法(文字列探索アルゴリズム)
+// BoyerMoore法
 
 // Quote from https://www.yasuhisay.info/entry/20091215/1260835159
 
