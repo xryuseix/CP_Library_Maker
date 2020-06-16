@@ -1,80 +1,66 @@
-class LCA {
-    int n;
-    int MAX;
-    vvi doubling, v;
+class BridgeArticulation {
+    int N, num = 0;
+    vvi G;
+    vi pre, low;
+    vb isPassed;
 
-    void init() {
-        rep(i, n) {
-            for(auto j : v[i]) {
-                doubling[0][j] = i;
+    int culcLow(const int v, const int bef) {
+        int nowLow = num;
+        low[v] = pre[v] = nowLow;
+        for(auto ne : G[v]) {
+            if(ne == bef) continue;
+            if(ne == 0) {
+                low[0] = -1;
             }
-        }
-        for(int i = 1; i < MAX; i++) {
-            rep(j, n) {
-                doubling[i][j] = doubling[i - 1][doubling[i - 1][j]];
+            if(pre[ne] == -1) {
+                num++;
+                culcLow(ne, v);
             }
+            chmin(nowLow, low[ne]);
         }
-        depth[0] = 0;
-        dfs(0, -1);
+        return low[v] = nowLow;
     }
 
-    void dfs(const int crrPos, const int befPos) {
-        for(auto i : v[crrPos]) {
-            if(i == befPos || depth[i] != -1) {
-                continue;
+    void traceGraph(const int v, const int bef) {
+        bool is_articulation = false;
+        for(auto ne : G[v]) {
+            if(ne == bef) continue;
+            if(!isPassed[ne]) {
+                if(low[ne] >= pre[v] && (bef != -1 || G[v].size() >= 2)) {
+                    is_articulation = true;
+                }
+                if(low[ne] == pre[ne]) {
+                    bridges.emplace_back(min(v, ne), max(v, ne));
+                }
+                isPassed[ne] = true;
+                traceGraph(ne, v);
             }
-            depth[i] = depth[crrPos] + 1;
-            dfs(i, crrPos);
+        }
+        if(is_articulation) {
+            articulation.push_back(v);
         }
     }
 
 public:
-    vi depth;
+    vpii bridges; // 橋
+    vi articulation; // 関節点
 
-    // vは0が根のbfs木にする．親->子のように辺を張る．
-    LCA(vvi &_v) : v(_v), n(_v.size()) {
-        MAX = ceil(log2(n));
-        doubling = vvi(MAX, vi(n, 0));
-        depth = vi(n, -1);
-        init();
+    Bridge(const int _n, const vvi _G) : N(_n), G(_G) {
+        pre = vi(N, -1);
+        low = vi(N, INF);
+        isPassed = vb(N, false);
+        isPassed[0] = true;
     }
 
-    void show(const int height = 0) {
-        rep(i, ((!height)?MAX:height)) {
-            dump(doubling[i]);
-        }
-        dump(depth);
+    void findBridges() {
+        culcLow(0, -1);
+        traceGraph(0, -1);
+        Sort(bridges);
     }
 
-    // ダブリングでVのnum個親の祖先を調べる
-    int doublingNode(int V, const int num) {
-        rep(i, MAX) {
-            if((1LL<<i) & num) {
-                V = doubling[i][V];
-            }
+    void show() {
+        for(auto p : bridges) {
+            cout << p.fi << " " << p.se << endl; 
         }
-        return V;
-    }
-
-    int lca(int A, int B) {
-        // Aのが深い位置にあるようにする
-        if(depth[A] < depth[B]) {
-            swap(A, B);
-        }
-        A = doublingNode(A, depth[A] - depth[B]);
-        if(A == B) {
-            return A;
-        }
-        
-        int ng = -1;
-        int ok = depth[A] + 1;
-        while(abs(ng - ok) > 1) {
-            int mid = (ng + ok)/2;
-            if(doublingNode(A, mid) != doublingNode(B, mid)) {
-                ng = mid;
-            }
-            else ok = mid;
-        }
-        return  doublingNode(A, ng + 1);
     }
 };

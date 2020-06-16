@@ -1687,12 +1687,11 @@ void lambdaSort(vector<T> &v) {
 		return l.fi > r.fi; // このbool式が成り立つ時入れ替える
 	});
 }
-class Bridge {
+class BridgeArticulation {
 	int N, num = 0;
 	vvi G;
 	vi pre, low;
 	vb isPassed;
-	vpii bridges;
 
 	int culcLow(const int v, const int bef) {
 		int nowLow = num;
@@ -1712,9 +1711,13 @@ class Bridge {
 	}
 
 	void traceGraph(const int v, const int bef) {
+		bool is_articulation = false;
 		for(auto ne : G[v]) {
 			if(ne == bef) continue;
 			if(!isPassed[ne]) {
+				if(low[ne] >= pre[v] && (bef != -1 || G[v].size() >= 2)) {
+					is_articulation = true;
+				}
 				if(low[ne] == pre[ne]) {
 					bridges.emplace_back(min(v, ne), max(v, ne));
 				}
@@ -1722,9 +1725,15 @@ class Bridge {
 				traceGraph(ne, v);
 			}
 		}
+		if(is_articulation) {
+			articulation.push_back(v);
+		}
 	}
 
 public:
+	vpii bridges; // 橋
+	vi articulation; // 関節点
+
 	Bridge(const int _n, const vvi _G) : N(_n), G(_G) {
 		pre = vi(N, -1);
 		low = vi(N, INF);
@@ -1868,16 +1877,13 @@ public:
 		if(A == B) {
 			return A;
 		}
-		
-		int ng = -1;
-		int ok = depth[A] + 1;
-		while(abs(ng - ok) > 1) {
-			int mid = (ng + ok)/2;
-			if(doublingNode(A, mid) != doublingNode(B, mid)) {
-				ng = mid;
+
+		for (int k = MAX - 1; k >= 0; k--) {
+			if (doubling[k][A] != doubling[k][B]) {
+				A = doubling[k][A];
+				B = doubling[k][B];
 			}
-			else ok = mid;
 		}
-		return  doublingNode(A, ng + 1);
+		return doubling[0][A];
 	}
 };

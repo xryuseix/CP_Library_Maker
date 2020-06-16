@@ -67,16 +67,13 @@ public:
 		if(A == B) {
 			return A;
 		}
-		
-		int ng = -1;
-		int ok = depth[A] + 1;
-		while(abs(ng - ok) > 1) {
-			int mid = (ng + ok)/2;
-			if(doublingNode(A, mid) != doublingNode(B, mid)) {
-				ng = mid;
+
+		for (int k = MAX - 1; k >= 0; k--) {
+			if (doubling[k][A] != doubling[k][B]) {
+				A = doubling[k][A];
+				B = doubling[k][B];
 			}
-			else ok = mid;
 		}
-		return  doublingNode(A, ng + 1);
+		return doubling[0][A];
 	}
 };
