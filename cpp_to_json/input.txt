@@ -1,66 +1,59 @@
-class BridgeArticulation {
-    int N, num = 0;
-    vvi G;
-    vi pre, low;
-    vb isPassed;
+class MaximumFlow {
 
-    int culcLow(const int v, const int bef) {
-        int nowLow = num;
-        low[v] = pre[v] = nowLow;
-        for(auto ne : G[v]) {
-            if(ne == bef) continue;
-            if(ne == 0) {
-                low[0] = -1;
-            }
-            if(pre[ne] == -1) {
-                num++;
-                culcLow(ne, v);
-            }
-            chmin(nowLow, low[ne]);
-        }
-        return low[v] = nowLow;
-    }
+    int v;
 
-    void traceGraph(const int v, const int bef) {
-        bool is_articulation = false;
-        for(auto ne : G[v]) {
-            if(ne == bef) continue;
-            if(!isPassed[ne]) {
-                if(low[ne] >= pre[v] && (bef != -1 || G[v].size() >= 2)) {
-                    is_articulation = true;
+    // 辺を表す構造体(行き先，容量，逆辺のインデックス)
+    struct edge {
+        int to;
+        int cap;
+        int rev;
+    };
+
+    vector<vector<edge>> G; // グラフの隣接リスト表現
+    vector<bool> used; // DFSですでに調べたかのフラグ
+
+    // 増加パスをDFSで探す(今いる頂点, ゴールの頂点, 今の頂点以降のフローの最小値)
+    int dfs(int v, int t, int f) {
+        if (v == t) return f;
+        used[v] = true;
+        for (int i = 0; i < G[v].size(); i++) {
+            // vから行ける&&cap>0の頂点を全てたどる
+            edge& e = G[v][i];
+            if (!used[e.to] && e.cap > 0) {
+                // 次の頂点(e.to)以降でtまで行けるパスを探索し，その時のフローの最小値をdとする
+                int d = dfs(e.to, t, min(f, e.cap));
+                if (d > 0) {
+                    e.cap -= d;
+                    G[e.to][e.rev].cap += d;
+                    return d;
                 }
-                if(low[ne] == pre[ne]) {
-                    bridges.emplace_back(min(v, ne), max(v, ne));
-                }
-                isPassed[ne] = true;
-                traceGraph(ne, v);
             }
         }
-        if(is_articulation) {
-            articulation.push_back(v);
-        }
+        return 0;
     }
 
 public:
-    vpii bridges; // 橋
-    vi articulation; // 関節点
-
-    Bridge(const int _n, const vvi _G) : N(_n), G(_G) {
-        pre = vi(N, -1);
-        low = vi(N, INF);
-        isPassed = vb(N, false);
-        isPassed[0] = true;
+    MaximumFlow(int _v) : v(_v) {
+        used = vector<bool>(v);
+        G = vector<vector<edge>>(v);
     }
 
-    void findBridges() {
-        culcLow(0, -1);
-        traceGraph(0, -1);
-        Sort(bridges);
+    // fromからtoへ向かう容景capの辺をグラフに追加する
+    void add(int from, int to, int cap) {
+        G[from].push_back((edge){to, cap, (int)G[to].size()});
+        G[to].push_back((edge){from, 0, (int)G[from].size() - 1});
     }
 
-    void show() {
-        for(auto p : bridges) {
-            cout << p.fi << " " << p.se << endl; 
+    // sからtへの最大流を求める
+    int maxFlow(int s, int t) {
+        int flow = 0;
+        while (true) {
+            used = vector<bool>(v);
+            int f = dfs(s, t, INF);
+            if (f == 0) {
+                return flow;
+            }
+            flow += f;
         }
     }
 };
