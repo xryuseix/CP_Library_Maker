@@ -1,9 +1,6 @@
 import os
 import datetime
 
-# snippetの更新
-os.system('sh weekly.sh')
-
 # Python コマンド
 os.system('python remove_index.py')
 os.system('cd json_to_header; python json_to_header.py')
@@ -18,7 +15,7 @@ print('Input commit_message -> ', end='')
 commit_message = list(input())
 
 os.system('git add --all')
-if len(commit_message) > 0:
+if commit_message:
     os.system('git commit -m "' + ''.join(commit_message) + '"')
 else:
     os.system('git commit -m "update at ' + str(dt_now) + '"')
