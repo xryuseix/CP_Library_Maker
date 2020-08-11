@@ -27,6 +27,7 @@ struct mint {
 	}
 	mint& operator/=(const mint a) {
 		x *= modinv(a).x;
+		x %= MOD;
 		return (*this);
 	}
 	mint& operator%=(const mint a) {

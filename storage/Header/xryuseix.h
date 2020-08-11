@@ -103,21 +103,32 @@ public:
 		return true;
 	}
 };
-vector<bool> eratosmake(int n){
-	vector<bool> num(n + 1, false);
-	for(int i = 0; i < n; i++) num[i] = true;
-	// 0と1を消す
-	num[0] = num[1] = false;
-	// iを残してiの倍数を消していく
-	for(int i = 2; i < n; i++){
-		if(num[i]){
-			for(int j = i + i; j < n; j += i){
-				num[j] = false;
+class Sieve{
+	int N;
+	void eratosmake(void) {
+		// iを残してiの倍数を消していく
+		for(int i = 2; i < N; i++) {
+			if(nums[i] == 1) {
+				for(int j = i + i; j < N; j += i){
+					nums[j] = i;
+				}
 			}
 		}
 	}
-	return num;
-}
+
+public:
+	vector<int> nums;
+	Sieve(int n):N(n){
+		nums = vi(n+1, 1);
+		eratosmake();
+	}
+	bool isPrime(int n) {
+		return nums[n] == 1;
+	}
+	int minPrimeFactor(int n) {
+		return nums[n];
+	}
+};
 #define QsoetN 10
 int a[QsoetN];
 void quicksort(int a[], int first, int last){
@@ -349,6 +360,7 @@ struct mint {
 	}
 	mint& operator/=(const mint a) {
 		x *= modinv(a).x;
+		x %= MOD;
 		return (*this);
 	}
 	mint& operator%=(const mint a) {
@@ -587,47 +599,46 @@ vector<int> topo(int N) { // Nはノード数
 	reverse(order.begin(), order.end());
 	return order;
 }
-template <typename T>
 class DIJKSTRA {
 public:
 	int V;
 
 	struct dk_edge {
 		int to;
-		T cost;
+		ll cost;
 	};
 
-	typedef pair<T, int> PI; //firstは最短距離、secondは頂点の番号
-	vector<vector<dk_edge> >G;
-	vector<T> d; //これ答え。d[i]:=V[i]までの最短距離
-	vector<int> prev; //経路復元
+	typedef pair<ll, int> PI;  // firstは最短距離、secondは頂点の番号
+	vector<vector<dk_edge> > G;
+	vector<ll> d;      //これ答え。d[i]:=V[i]までの最短距離
+	vector<int> prev;  //経路復元
 
 	DIJKSTRA(int size) {
 		V = size;
 		G = vector<vector<dk_edge> >(V);
-		prev = vector<int> (V, -1);
+		prev = vector<int>(V, -1);
 	}
 
-	void add(int from, int to, T cost) {
+	void add(int from, int to, ll cost) {
 		dk_edge e = {to, cost};
 		G[from].push_back(e);
 	}
 
 	void dijkstra(int s) {
-		//greater<P>を指定することでfirstが小さい順に取り出せるようにする
+		// greater<P>を指定することでfirstが小さい順に取り出せるようにする
 		priority_queue<PI, vector<PI>, greater<PI> > que;
-		d = vector<T> (V, LLINF);
+		d = vector<ll>(V, LLINF);
 		d[s] = 0;
 		que.push(PI(0, s));
 
-		while(!que.empty()) {
+		while (!que.empty()) {
 			PI p = que.top();
 			que.pop();
 			int v = p.second;
-			if(d[v] < p.first) continue;
-			for(int i = 0; i < G[v].size(); i++) {
+			if (d[v] < p.first) continue;
+			for (int i = 0; i < G[v].size(); i++) {
 				dk_edge e = G[v][i];
-				if(d[e.to] > d[v] + e.cost) {
+				if (d[e.to] > d[v] + e.cost) {
 					d[e.to] = d[v] + e.cost;
 					prev[e.to] = v;
 					que.push(PI(d[e.to], e.to));
@@ -637,19 +648,19 @@ public:
 	}
 	vector<int> get_path(int t) {
 		vector<int> path;
-		for(;t != -1; t = prev[t]) {
-			//tがsになるまでprev[t]をたどっていく
+		for (; t != -1; t = prev[t]) {
+			// tがsになるまでprev[t]をたどっていく
 			path.push_back(t);
 		}
 		//このままだとt->sの順になっているので逆順にする
-		reverse(path.begin(),path.end());
+		reverse(path.begin(), path.end());
 		return path;
 	}
 	void show(void) {
-		for(int i = 0; i < d.size()-1; i ++) {
+		for (int i = 0; i < d.size() - 1; i++) {
 			cout << d[i] << " ";
 		}
-		cout << d[d.size()-1] << endl;
+		cout << d[d.size() - 1] << endl;
 	}
 };
 template <typename T>
@@ -1886,4 +1897,211 @@ public:
 		}
 		return doubling[0][A];
 	}
+};
+class MaximumFlow {
+
+	int v;
+
+	// 辺を表す構造体(行き先，容量，逆辺のインデックス)
+	struct edge {
+		int to;
+		int cap;
+		int rev;
+	};
+
+	vector<vector<edge>> G; // グラフの隣接リスト表現
+	vector<bool> used; // DFSですでに調べたかのフラグ
+
+	// 増加パスをDFSで探す(今いる頂点, ゴールの頂点, 今の頂点以降のフローの最小値)
+	int dfs(int v, int t, int f) {
+		if (v == t) return f;
+		used[v] = true;
+		for (int i = 0; i < G[v].size(); i++) {
+			// vから行ける&&cap>0の頂点を全てたどる
+			edge& e = G[v][i];
+			if (!used[e.to] && e.cap > 0) {
+				// 次の頂点(e.to)以降でtまで行けるパスを探索し，その時のフローの最小値をdとする
+				int d = dfs(e.to, t, min(f, e.cap));
+				if (d > 0) {
+					e.cap -= d;
+					G[e.to][e.rev].cap += d;
+					return d;
+				}
+			}
+		}
+		return 0;
+	}
+
+public:
+	MaximumFlow(int _v) : v(_v) {
+		used = vector<bool>(v);
+		G = vector<vector<edge>>(v);
+	}
+
+	// fromからtoへ向かう容景capの辺をグラフに追加する
+	void add(int from, int to, int cap) {
+		G[from].push_back((edge){to, cap, (int)G[to].size()});
+		G[to].push_back((edge){from, 0, (int)G[from].size() - 1});
+	}
+
+	// sからtへの最大流を求める
+	int maxFlow(int s, int t) {
+		int flow = 0;
+		while (true) {
+			used = vector<bool>(v);
+			int f = dfs(s, t, INF);
+			if (f == 0) {
+				return flow;
+			}
+			flow += f;
+		}
+	}
+};
+class MinCostFlow {
+
+	int V; // 頂点数
+
+	// 辺を表す構造体(行き先，容量，逆辺のインデックス)
+	struct edge {
+		int to;
+		int cap;
+		int cost;
+		int rev;
+	};
+
+	vector<vector<edge>> G; // グラフの隣接リスト表現
+	vector<int> h; // ポテンシャル
+	vector<int> prevV; // 直前の頂点
+	vector<int> prevE; // 直前の辺
+	vector<int> dist; // 最短距離
+	typedef pair<int, int> PI;
+
+public:
+	MinCostFlow(int _v) : V(_v) {
+		G = vector<vector<edge>>(V);
+		h = vector<int>(V);
+		prevV = vector<int>(V);
+		prevE = vector<int>(V);
+	}
+
+	// fromからtoへ向かう容景capの辺をグラフに追加する
+	void add(int from, int to, int cap, int cost) {
+		G[from].push_back((edge){to, cap, cost, (int)G[to].size()});
+		G[to].push_back((edge){from, 0, -cost, (int)G[from].size() - 1});
+	}
+
+	// sからtへの最大流を求める
+	int minCostFlow(int s, int t, int f) {
+		int res = 0;
+		while (f > 0) {
+			// ダイクストラ法を用いてhを更新する
+			priority_queue<PI, vector<PI>, greater<PI>> que;
+			dist = vector<int>(V, INF);
+			dist[s] = 0;
+			que.push(PI(0, s));
+			while(!que.empty()) {
+				PI p = que.top();
+				que.pop();
+				int v = p.second;
+				if(dist[v] < p.first) continue;
+				for (int i = 0; i < G[v].size(); i++) {
+					edge e = G[v][i];
+					if(e.cap > 0 && dist[e.to] > dist[v] + e.cost + h[v] - h[e.to]) {
+						dist[e.to] = dist[v] + e.cost + h[v] - h[e.to];
+						prevV[e.to] = v;
+						prevE[e.to] = i;
+						que.push(PI(dist[e.to], e.to));
+					}
+				}
+			}
+			if(dist[t] == INF) {
+				// これ以上流せない
+				return -1;
+			}
+			for(int v = 0; v < V; v++) {
+				h[v] += dist[v];
+			}
+			// s-t問最短路に沿って目一杯流す
+			int d = f;
+			for(int v = t; v != s; v = prevV[v] ) {
+				d = min(d, G[prevV[v]][prevE[v]].cap);
+			}
+			f -= d;
+			res += d*h[t];
+			for(int v = t; v != s; v = prevV[v]) {
+				edge& e = G[prevV[v]][prevE[v]];
+				e.cap -= d;
+				G[v][e.rev].cap += d;
+			}
+		}
+		return res;
+	}
+};
+template <int char_size, int base>
+class Trie {
+public:
+	struct Node {
+		vector<int> next;    // 子の頂点番号を格納。存在しなければ-1
+		vector<int> accept;  // 末端がこの頂点になる文字列(受理状態)のID
+		int c;               // 文字，baseからの距離
+		int common;          // いくつの文字列がこの頂点を共有しているか
+		Node(int c_) : c(c_), common(0) { next = vector<int>(char_size, -1); }
+	};
+	vector<Node> nodes;  // trie 木本体
+	Trie() { nodes.push_back(Node(0)); }
+
+	/*
+	単語の検索
+	prefix ... 先頭のwordが一致していればいいかどうか
+	*/
+	bool search(const string word, const bool prefix = false) {
+		int node_id = 0;
+		for (auto w : word) {
+			int c = w - base;
+			int next_id = nodes[node_id].next[c];
+			// printf("%c %d %d
+",w,c,next_id);
+			if (next_id == -1) {
+				return false;
+			}
+			node_id = next_id;
+		}
+		return (prefix) ? true : nodes[node_id].accept.size();
+	}
+
+	/*
+	単語の挿入
+	word_id ... 何番目に追加する単語か
+	*/
+	void insert(const string &word) {
+		int node_id = 0;
+		for (auto w : word) {
+			int c = w - base;
+			int next_id = nodes[node_id].next[c];
+			if (next_id == -1) {  // 次の頂点が存在しなければ追加
+				next_id = nodes.size();
+				nodes.push_back(Node(c));
+				nodes[node_id].next[c] = next_id;
+			}
+			++nodes[node_id].common;
+			node_id = next_id;
+		}
+		++nodes[node_id].common;
+		nodes[node_id].accept.push_back(nodes[0].common - 1); // 単語の終端なので、頂点に番号を入れておく
+	}
+
+	/*
+	prefixの検索
+	*/
+	bool start_with(const string& prefix) { return search(prefix, true); }
+
+	/*
+	挿入した単語数
+	*/
+	int count() const { return nodes[0].common; }
+
+	/*
+	頂点数
+	*/
+	int size() const { return nodes.size(); }
 };

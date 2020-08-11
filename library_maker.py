@@ -2,6 +2,8 @@ import os
 import datetime
 
 # Python コマンド
+os.system('rm storage/snippet.json')
+os.system('cp ~/Library/Application\ Support/Code/User/snippets/cpp.json storage/snippet.json')
 os.system('python remove_index.py')
 os.system('cd json_to_header; python json_to_header.py')
 os.system('cd json_splitter/; python ./json_splitter.py')
