@@ -335,15 +335,11 @@ int Pascal(int n,int k){
 }
 struct mint {
 	ll x;
-	mint(ll _x = 0):x((_x % MOD + MOD) % MOD) {}
+	mint(ll _x = 0) : x((_x % MOD + MOD) % MOD) {}
 
 	/* 初期化子 */
-	mint operator+() const {
-	return mint(x);
-	}
-	mint operator-() const {
-	return mint(-x);
-	}
+	mint operator+() const { return mint(x); }
+	mint operator-() const { return mint(-x); }
 
 	/* 代入演算子 */
 	mint& operator+=(const mint a) {
@@ -369,11 +365,11 @@ struct mint {
 	}
 	mint& operator++() {
 		++x;
-		if(x >= MOD) x -= MOD;
+		if (x >= MOD) x -= MOD;
 		return *this;
 	}
 	mint& operator--() {
-		if(!x) x += MOD;
+		if (!x) x += MOD;
 		--x;
 		return *this;
 	}
@@ -401,64 +397,52 @@ struct mint {
 	/* 算術演算子 */
 	mint operator+(const mint a) const {
 		mint res(*this);
-		return res+=a;
+		return res += a;
 	}
 	mint operator-(const mint a) const {
 		mint res(*this);
-		return res-=a;
+		return res -= a;
 	}
 	mint operator*(const mint a) const {
 		mint res(*this);
-		return res*=a;
+		return res *= a;
 	}
 	mint operator/(const mint a) const {
 		mint res(*this);
-		return res/=a;
+		return res /= a;
 	}
 	mint operator%(const mint a) const {
 		mint res(*this);
-		return res%=a;
+		return res %= a;
 	}
 	mint operator&(const mint a) const {
 		mint res(*this);
-		return res&=a;
+		return res &= a;
 	}
 	mint operator|(const mint a) const {
 		mint res(*this);
-		return res|=a;
+		return res |= a;
 	}
 	mint operator^(const mint a) const {
 		mint res(*this);
-		return res^=a;
+		return res ^= a;
 	}
 	mint operator<<(const mint a) const {
 		mint res(*this);
-		return res<<=a;
+		return res <<= a;
 	}
 	mint operator>>(const mint a) const {
 		mint res(*this);
-		return res>>=a;
+		return res >>= a;
 	}
 
 	/* 条件演算子 */
-	bool operator==(const mint a) const noexcept {
-		return x == a.x;
-	}
-	bool operator!=(const mint a) const noexcept {
-		return x != a.x;
-	}
-	bool operator<(const mint a) const noexcept {
-		return x < a.x;
-	}
-	bool operator>(const mint a) const noexcept {
-		return x > a.x;
-	}
-	bool operator<=(const mint a) const noexcept {
-		return x <= a.x;
-	}
-	bool operator>=(const mint a) const noexcept {
-		return x >= a.x;
-	}
+	bool operator==(const mint a) const noexcept { return x == a.x; }
+	bool operator!=(const mint a) const noexcept { return x != a.x; }
+	bool operator<(const mint a) const noexcept { return x < a.x; }
+	bool operator>(const mint a) const noexcept { return x > a.x; }
+	bool operator<=(const mint a) const noexcept { return x <= a.x; }
+	bool operator>=(const mint a) const noexcept { return x >= a.x; }
 
 	/* ストリーム挿入演算子 */
 	friend istream& operator>>(istream& is, mint& m) {
@@ -472,13 +456,11 @@ struct mint {
 	}
 
 	/* その他の関数 */
-	mint modinv(mint a) {
-		return pow(a, MOD - 2);
-	}
-	mint pow(mint x, mint n){
+	mint modinv(mint a) { return pow(a, MOD - 2); }
+	mint pow(mint x, mint n) {
 		mint res = 1;
-		while(n.x > 0){
-			if((n%2).x) res *= x;
+		while (n.x > 0) {
+			if ((n % 2).x) res *= x;
 			x *= x;
 			n.x /= 2;
 		}
@@ -1522,7 +1504,7 @@ private:
 int Q;
 cin >> Q;
 while(Q--) {
-	
+	$1
 }
 template <typename T>
 class Sum {
