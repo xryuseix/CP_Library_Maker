@@ -1,134 +1,115 @@
-struct mint {
-    ll x;
-    mint(ll _x = 0) : x((_x % MOD + MOD) % MOD) {}
+template <typename T>
+class Sum {
+   public:
+    // 単位元
+    T unit;
 
-    /* 初期化子 */
-    mint operator+() const { return mint(x); }
-    mint operator-() const { return mint(-x); }
-
-    /* 代入演算子 */
-    mint& operator+=(const mint a) {
-        if ((x += a.x) >= MOD) x -= MOD;
-        return *this;
-    }
-    mint& operator-=(const mint a) {
-        if ((x += MOD - a.x) >= MOD) x -= MOD;
-        return *this;
-    }
-    mint& operator*=(const mint a) {
-        (x *= a.x) %= MOD;
-        return *this;
-    }
-    mint& operator/=(const mint a) {
-        x *= modinv(a).x;
-        x %= MOD;
-        return (*this);
-    }
-    mint& operator%=(const mint a) {
-        x %= a.x;
-        return (*this);
-    }
-    mint& operator++() {
-        ++x;
-        if (x >= MOD) x -= MOD;
-        return *this;
-    }
-    mint& operator--() {
-        if (!x) x += MOD;
-        --x;
-        return *this;
-    }
-    mint& operator&=(const mint a) {
-        x &= a.x;
-        return (*this);
-    }
-    mint& operator|=(const mint a) {
-        x |= a.x;
-        return (*this);
-    }
-    mint& operator^=(const mint a) {
-        x ^= a.x;
-        return (*this);
-    }
-    mint& operator<<=(const mint a) {
-        x *= pow(2, a).x;
-        return (*this);
-    }
-    mint& operator>>=(const mint a) {
-        x /= pow(2, a).x;
-        return (*this);
+    Sum(void) {
+        // 単位元
+        unit = 0;
     }
 
-    /* 算術演算子 */
-    mint operator+(const mint a) const {
-        mint res(*this);
-        return res += a;
-    }
-    mint operator-(const mint a) const {
-        mint res(*this);
-        return res -= a;
-    }
-    mint operator*(const mint a) const {
-        mint res(*this);
-        return res *= a;
-    }
-    mint operator/(const mint a) const {
-        mint res(*this);
-        return res /= a;
-    }
-    mint operator%(const mint a) const {
-        mint res(*this);
-        return res %= a;
-    }
-    mint operator&(const mint a) const {
-        mint res(*this);
-        return res &= a;
-    }
-    mint operator|(const mint a) const {
-        mint res(*this);
-        return res |= a;
-    }
-    mint operator^(const mint a) const {
-        mint res(*this);
-        return res ^= a;
-    }
-    mint operator<<(const mint a) const {
-        mint res(*this);
-        return res <<= a;
-    }
-    mint operator>>(const mint a) const {
-        mint res(*this);
-        return res >>= a;
+    // 演算関数
+    T calc(T a, T b) { return a + b; }
+};
+
+template <typename T>
+struct Min {
+   public:
+    // 単位元
+    T unit;
+
+    Min(void) {
+        // 単位元
+        unit = INF;
     }
 
-    /* 条件演算子 */
-    bool operator==(const mint a) const noexcept { return x == a.x; }
-    bool operator!=(const mint a) const noexcept { return x != a.x; }
-    bool operator<(const mint a) const noexcept { return x < a.x; }
-    bool operator>(const mint a) const noexcept { return x > a.x; }
-    bool operator<=(const mint a) const noexcept { return x <= a.x; }
-    bool operator>=(const mint a) const noexcept { return x >= a.x; }
+    // 演算関数
+    T calc(T a, T b) { return min(a, b); }
+};
 
-    /* ストリーム挿入演算子 */
-    friend istream& operator>>(istream& is, mint& m) {
-        is >> m.x;
-        m.x = (m.x % MOD + MOD) % MOD;
-        return is;
-    }
-    friend ostream& operator<<(ostream& os, const mint& m) {
-        os << m.x;
-        return os;
+template <typename T, class MONOID>
+class SegmentTree {
+   public:
+    // セグメント木の葉の要素数
+    int n;
+
+    // セグメント木
+    vector<T> tree;
+
+    // モノイド
+    MONOID mono;
+
+    SegmentTree(vector<T>& v)
+        : n(1 << (int)ceil(log2(v.size()))),
+          tree(vector<T>(n << 1, mono.unit)) {
+        for (int i = 0; i < v.size(); ++i) {
+            tree[i + n] = v[i];
+        }
+        for (int i = n - 1; i > 0; --i) {
+            tree[i] = mono.calc(tree[i << 1 | 0], tree[i << 1 | 1]);
+        }
     }
 
-    /* その他の関数 */
-    mint modinv(mint a) { return pow(a, MOD - 2); }
-    mint pow(mint x, mint n) {
-        mint res = 1;
-        while (n.x > 0) {
-            if ((n % 2).x) res *= x;
-            x *= x;
-            n.x /= 2;
+    SegmentTree(int _n)
+        : n(1 << (int)ceil(log2(_n))), tree(vector<T>(n << 1, mono.unit)) {}
+
+    // k番目の値(0-indexed)をxに変更
+    void update(int k, T x) {
+        k += n;
+        tree[k] = x;
+        for (k = k >> 1; k > 0; k >>= 1) {
+            tree[k] = mono.calc(tree[k << 1 | 0], tree[k << 1 | 1]);
+        }
+    }
+
+    // k番目の値(0-indexed)をxを加算
+    void add(int k, T x) {
+        k += n;
+        tree[k] += x;
+        for (k = k >> 1; k > 0; k >>= 1) {
+            tree[k] = mono.calc(tree[k << 1 | 0], tree[k << 1 | 1]);
+        }
+    }
+
+    // [l, r)の最小値(0-indexed)を求める．
+    T query(int l, int r) {
+        T res = mono.unit;
+        l += n;
+        r += n;
+        while (l < r) {
+            if (l & 1) {
+                res = mono.calc(res, tree[l++]);
+            }
+            if (r & 1) {
+                res = mono.calc(res, tree[--r]);
+            }
+            l >>= 1;
+            r >>= 1;
         }
         return res;
+    }
+
+    T operator[](int k) {
+        // st[i]で添字iの要素の値を返す
+        if (k - n >= 0 || k < 0) {
+            return -INF;
+        }
+        return tree[tree.size() - n + k];
+    }
+
+    void show(int elements = 31) {
+        int ret = 2;
+        for (int i = 1; i < max(2 * n, elements); ++i) {
+            if (tree[i] == mono.unit)
+                cout << "UNIT ";
+            else
+                cout << tree[i] << " ";
+            if (i == ret - 1) {
+                cout << endl;
+                ret <<= 1;
+            }
+        }
+        cout << endl;
     }
 };
