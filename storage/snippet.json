@@ -7,36 +7,6 @@
 		],
 		"description": "ユークリッドの互除法"
 	},
-	"next_permutation": {
-		"prefix": "next_permutation",
-		"body": [
-			"template <class BidirectionalIterator>",
-			"bool generic_next_permutation(BidirectionalIterator first, BidirectionalIterator last) {",
-			"\t// 要素が０又は１の場合終了",
-			"\tif (first == last) return false;",
-			"\tBidirectionalIterator second = first;",
-			"\t++second;",
-			"\tif (second == last) return false;",
-			"\tBidirectionalIterator i = last;",
-			"\t--i;   // itを最後尾にセット",
-			"\twhile (true) {",
-			"\t\tBidirectionalIterator prev_i = i;",
-			"\t\tif (*(--i) < *prev_i) {",
-			"\t\t\tBidirectionalIterator j = last;",
-			"\t\t\twhile (!(*i < *--j));",
-			"\t\t\tswap(*i, *j);",
-			"\t\t\treverse(prev_i, last);",
-			"\t\t\treturn true;",
-			"\t\t}",
-			"\t\tif (i == first) {",
-			"\t\t\treverse(first, last);",
-			"\t\t\treturn false;",
-			"\t\t}",
-			"\t}",
-			"}"
-		],
-		"description": "next_permutation"
-	},
 	"lcm": {
 		"prefix": "lcm",
 		"body": [
@@ -166,30 +136,6 @@
 			"};"
 		],
 		"description": "エラトステネスの篩"
-	},
-	"quicksort": {
-		"prefix": "quicksort",
-		"body": [
-			"#define QsoetN 10",
-			"int a[QsoetN];",
-			"void quicksort(int a[], int first, int last){",
-			"\tint i, j, x;",
-			"\tx = a[(first + last)/2];",
-			"\ti = first;",
-			"\tj = last;",
-			"\twhile(1){",
-			"\t\twhile(a[i] < x) i++;",
-			"\t\twhile(x < a[j]) j--;",
-			"\t\tif(i >= j) break;",
-			"\t\tswap(a[i], a[j]);",
-			"\t\ti++;",
-			"\t\tj--;",
-			"\t}",
-			"\tif(first < i - 1) quicksort(a, first, i - 1);",
-			"\tif(j + 1 < last) quicksort(a, j + 1, last);",
-			"}"
-		],
-		"description": "クイックソートですがsort関数で十分です"
 	},
 	"ngcd": {
 		"prefix": "ngcd",
@@ -423,31 +369,6 @@
 			"}"
 		],
 		"description": "一次元座標圧縮"
-	},
-	"Pascal": {
-		"prefix": "Pascal",
-		"body": [
-			"bool useinit = false;",
-			"int combMax = 4000;",
-			"vector<vector<ll> > comb(combMax + 2, vector<ll> (combMax + 2));",
-			"void init(void) {",
-			"\tcomb[0][0] = 1;",
-			"\tfor(int i = 0; i <= combMax; i++){",
-			"\t\tfor(int j = 0; j <= i; j++){",
-			"\t\t\tcomb[i + 1][j] += comb[i][j];",
-			"\t\t\tcomb[i + 1][j + 1] += comb[i][j];",
-			"\t\t}",
-			"\t}",
-			"}",
-			"int Pascal(int n,int k){",
-			"\tif(!useinit){",
-			"\t\tinit();",
-			"\t\tuseinit = true;",
-			"\t}",
-			"\treturn comb[n][k];",
-			"}"
-		],
-		"description": "組み合わせ・PascalでnCkを求める"
 	},
 	"modint": {
 		"prefix": "modint",
@@ -1253,15 +1174,14 @@
 		"prefix": "extgcd",
 		"body": [
 			"// x,y に ax + by = gcd(a, b) を満たす値が格納される",
-			"ll extgcd(ll a, ll b, ll &x, ll &y) {",
+			"// 返り値は<gcd(a, b), x, y>",
+			"// auto [g, x, y] = extgcd(a, b);のように呼び出す",
+			"tuple<ll, ll, ll> extgcd(ll a, ll b) {",
 			"\tif (b == 0) {",
-			"\t\tx = 1;",
-			"\t\ty = 0;",
-			"\t\treturn a;",
+			"\t\treturn {a, 1, 0};",
 			"\t}",
-			"\tll d = extgcd(b, a%b, y, x);",
-			"\ty -= a/b * x;",
-			"\treturn d;",
+			"\tauto [g, x, y] = extgcd(b, a % b);",
+			"\treturn {g, y, x - a / b * y};",
 			"}"
 		],
 		"description": "拡張ユークリッドの互助法"
@@ -1588,6 +1508,7 @@
 			"\t\tinit();",
 			"\t\tisinit = 1;",
 			"\t}",
+			"\tif(n < k) return 0;",
 			"\tll nl = f[n]; // n!",
 			"\tll nkl = rf[n - k]; // (n-k)!",
 			"\tll kl = rf[k]; // k!",
@@ -2125,7 +2046,7 @@
 			"\tvpii bridges; // 橋",
 			"\tvi articulation; // 関節点",
 			"",
-			"\tBridge(const int _n, const vvi _G) : N(_n), G(_G) {",
+			"\tBridgeArticulation(const int _n, const vvi _G) : N(_n), G(_G) {",
 			"\t\tpre = vi(N, -1);",
 			"\t\tlow = vi(N, INF);",
 			"\t\tisPassed = vb(N, false);",

@@ -1,28 +1,4 @@
 ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}
-template <class BidirectionalIterator>
-bool generic_next_permutation(BidirectionalIterator first, BidirectionalIterator last) {
-	// 要素が０又は１の場合終了
-	if (first == last) return false;
-	BidirectionalIterator second = first;
-	++second;
-	if (second == last) return false;
-	BidirectionalIterator i = last;
-	--i;   // itを最後尾にセット
-	while (true) {
-		BidirectionalIterator prev_i = i;
-		if (*(--i) < *prev_i) {
-			BidirectionalIterator j = last;
-			while (!(*i < *--j));
-			swap(*i, *j);
-			reverse(prev_i, last);
-			return true;
-		}
-		if (i == first) {
-			reverse(first, last);
-			return false;
-		}
-	}
-}
 // gcdも呼ぶ！！！
 ll lcm(ll a, ll b) { return a / gcd(a,   b) * b;}
 // gcdも呼ぶ！！！
@@ -129,24 +105,6 @@ public:
 		return nums[n];
 	}
 };
-#define QsoetN 10
-int a[QsoetN];
-void quicksort(int a[], int first, int last){
-	int i, j, x;
-	x = a[(first + last)/2];
-	i = first;
-	j = last;
-	while(1){
-		while(a[i] < x) i++;
-		while(x < a[j]) j--;
-		if(i >= j) break;
-		swap(a[i], a[j]);
-		i++;
-		j--;
-	}
-	if(first < i - 1) quicksort(a, first, i - 1);
-	if(j + 1 < last) quicksort(a, j + 1, last);
-}
 // gcdも呼ぶ！！！
 ll ngcd(vector<ll> a){
 	ll d;
@@ -313,25 +271,6 @@ int compress(vector<ll> x) {
 		unzip[i] = x[i];
 	}
 	return x.size();
-}
-bool useinit = false;
-int combMax = 4000;
-vector<vector<ll> > comb(combMax + 2, vector<ll> (combMax + 2));
-void init(void) {
-	comb[0][0] = 1;
-	for(int i = 0; i <= combMax; i++){
-		for(int j = 0; j <= i; j++){
-			comb[i + 1][j] += comb[i][j];
-			comb[i + 1][j + 1] += comb[i][j];
-		}
-	}
-}
-int Pascal(int n,int k){
-	if(!useinit){
-		init();
-		useinit = true;
-	}
-	return comb[n][k];
 }
 struct mint {
 	ll x;
@@ -1011,15 +950,14 @@ int conlis(vector<int>& v) {
 	return ans;
 }
 // x,y に ax + by = gcd(a, b) を満たす値が格納される
-ll extgcd(ll a, ll b, ll &x, ll &y) {
+// 返り値は<gcd(a, b), x, y>
+// auto [g, x, y] = extgcd(a, b);のように呼び出す
+tuple<ll, ll, ll> extgcd(ll a, ll b) {
 	if (b == 0) {
-		x = 1;
-		y = 0;
-		return a;
+		return {a, 1, 0};
 	}
-	ll d = extgcd(b, a%b, y, x);
-	y -= a/b * x;
-	return d;
+	auto [g, x, y] = extgcd(b, a % b);
+	return {g, y, x - a / b * y};
 }
 class StronglyConnectedComponent {
 public:
@@ -1250,6 +1188,7 @@ ll nCk(int n, int k) {
 		init();
 		isinit = 1;
 	}
+	if(n < k) return 0;
 	ll nl = f[n]; // n!
 	ll nkl = rf[n - k]; // (n-k)!
 	ll kl = rf[k]; // k!
@@ -1739,7 +1678,7 @@ public:
 	vpii bridges; // 橋
 	vi articulation; // 関節点
 
-	Bridge(const int _n, const vvi _G) : N(_n), G(_G) {
+	BridgeArticulation(const int _n, const vvi _G) : N(_n), G(_G) {
 		pre = vi(N, -1);
 		low = vi(N, INF);
 		isPassed = vb(N, false);

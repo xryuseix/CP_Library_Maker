@@ -21,6 +21,7 @@ ll nCk(int n, int k) {
 		init();
 		isinit = 1;
 	}
+	if(n < k) return 0;
 	ll nl = f[n]; // n!
 	ll nkl = rf[n - k]; // (n-k)!
 	ll kl = rf[k]; // k!

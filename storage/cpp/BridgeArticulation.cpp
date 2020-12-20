@@ -47,7 +47,7 @@ public:
 	vpii bridges; // 橋
 	vi articulation; // 関節点
 
-	Bridge(const int _n, const vvi _G) : N(_n), G(_G) {
+	BridgeArticulation(const int _n, const vvi _G) : N(_n), G(_G) {
 		pre = vi(N, -1);
 		low = vi(N, INF);
 		isPassed = vb(N, false);
