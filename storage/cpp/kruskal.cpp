@@ -1,7 +1,6 @@
 // クラスカル法
 
-UnionFind uni(100);
-// Union-Findも呼んで！！そして上の書き換えて！！！
+// Union-Findも呼んで！！
 struct kr_edge {
 	int u; // 辺の片方，fromではないので二回辺を張る必要はない
 	int v; // 辺のもう片方
