@@ -2048,3 +2048,9 @@ namespace mp = boost::multiprecision;
 using Bint = mp::cpp_int;
 // 仮数部が10進数で1024桁の浮動小数点数型(TLEしたら小さくする)
 using Real = mp::number<mp::cpp_dec_float<1024>>;
+string getline() {
+	string s;
+	fflush(stdin);
+	getline(cin, s);
+	return s;
+}
