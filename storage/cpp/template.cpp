@@ -77,14 +77,19 @@ inline bool chmin(T& a, U b) {
 	}
 	return 0;
 }
+template <class T, class U>
+ostream& operator<<(ostream& os, pair<T, U>& p) {
+	cout << "(" << p.first << ", " << p.second << ")";
+	return os;
+}
 template <class T>
 inline void dump(T& v) {
-	if (v.size() > 100) {
-		cout << "ARRAY IS TOO LARGE!!!" << endl;
-	} else {
-		irep(i, v) { cout << (*i) << ((i == --v.end()) ? '
+	// if (v.size() > 100) {
+	//     cout << "ARRAY IS TOO LARGE!!!" << endl;
+	// } else {
+	irep(i, v) { cout << (*i) << ((i == --v.end()) ? '
 ' : ' '); }
-	}
+	// }
 }
 template <class T, class U>
 inline void dump(map<T, U>& v) {
@@ -105,9 +110,9 @@ inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
 inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
 const int INF = INT_MAX;
 constexpr ll LLINF = 1LL << 61;
-constexpr ll MOD = 1000000007;  // 998244353;
+// constexpr ll MOD = 1000000007;  // 998244353; //
 constexpr ld EPS = 1e-11;
-
+void Case(int i) { printf("Case #%d: ", i); }
 /* --------------------   ここまでテンプレ   -------------------- */
 
 int main() {
