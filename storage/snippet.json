@@ -1317,6 +1317,7 @@
 			"\t// (x1,y1) -> (x2, y2) の直線上のマスが塗られているとする",
 			"\t// 点の場合は (x1,y1) == (x2, y2) とする",
 			"\t// 四角形の場合は直線の集合とする",
+			"\t// (バグってるよこれ)",
 			"\tCompress(int max_h, int max_w, int n, vi x1, vi x2, vi y1, vi y2) {",
 			"\t\tbefore_H = max_h;",
 			"\t\tbefore_W = max_w;",
@@ -1403,7 +1404,7 @@
 			"\t}",
 			"};"
 		],
-		"description": "二次元座標圧縮"
+		"description": "二次元座標圧縮(バグってる)"
 	},
 	"template": {
 		"prefix": "templete",

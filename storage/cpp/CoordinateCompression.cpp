@@ -1,4 +1,4 @@
-// 二次元座標圧縮
+// 二次元座標圧縮(バグってる)
 
 class Compress {
 public:
@@ -10,6 +10,7 @@ public:
 	// (x1,y1) -> (x2, y2) の直線上のマスが塗られているとする
 	// 点の場合は (x1,y1) == (x2, y2) とする
 	// 四角形の場合は直線の集合とする
+	// (バグってるよこれ)
 	Compress(int max_h, int max_w, int n, vi x1, vi x2, vi y1, vi y2) {
 		before_H = max_h;
 		before_W = max_w;
