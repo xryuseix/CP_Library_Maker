@@ -854,9 +854,8 @@ public:
 	// モノイド
 	MONOID mono;
 
-	SegmentTree(vector<T>& v)
-		: n(1 << (int)ceil(log2(v.size()))),
-		tree(vector<T>(n << 1, mono.unit)) {
+	SegmentTree(vector<T>& v) : n(1 << (int)ceil(log2(v.size()))) {
+		tree = vector<T>(n << 1, mono.unit);
 		for (int i = 0; i < v.size(); ++i) {
 			tree[i + n] = v[i];
 		}
@@ -865,8 +864,9 @@ public:
 		}
 	}
 
-	SegmentTree(int _n)
-		: n(1 << (int)ceil(log2(_n))), tree(vector<T>(n << 1, mono.unit)) {}
+	SegmentTree(int _n) : n(1 << (int)ceil(log2(_n))) {
+		tree = vector<T>(n << 1, mono.unit);
+	}
 
 	// k番目の値(0-indexed)をxに変更
 	void update(int k, T x) {
@@ -914,7 +914,7 @@ public:
 
 	void show(int elements = 31) {
 		int ret = 2;
-		for (int i = 1; i < max(2 * n, elements); ++i) {
+		for (int i = 1; i < min(2 * n, elements); ++i) {
 			if (tree[i] == mono.unit)
 				cout << "UNIT ";
 			else
