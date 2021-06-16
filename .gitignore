@@ -1,1 +1,10 @@
 snippet_to_tex/a.out
+*.log
+*.fls
+*.aux
+*.dvi
+*.toc
+*.fdb_latexmk
+*.synctex.gz
+__latexindent_temp.tex
+out

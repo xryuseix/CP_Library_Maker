@@ -1,115 +1,102 @@
-template <typename T>
-class Sum {
-   public:
-    // 単位元
-    T unit;
+\documentclass[a4j,titlepage]{jarticle}
+\usepackage{url} % URL
+\usepackage{color} % 色付け
+\usepackage{amsmath} % align環境
+\usepackage{ascmac} % 枠付き文章
+\usepackage{listings,jlisting} % 日本語コメント
+\usepackage[dvipdfmx]{graphicx} % 画像
+\newcommand{\code}[1]{ \texttt{\detokenize{#1}} } % インラインプログラム
+%ここからソースコードの表示に関する設定
+\lstset{
+  language=c++,
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\textit},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+%ここまでソースコードの表示に関する設定
 
-    Sum(void) {
-        // 単位元
-        unit = 0;
-    }
+\title{レポートタイトル}
 
-    // 演算関数
-    T calc(T a, T b) { return a + b; }
-};
+\author{学籍番号2600290027 石川琉聖}
+\date{\today}
+\begin{document}
+\maketitle
+\section{セクション1}
 
-template <typename T>
-struct Min {
-   public:
-    // 単位元
-    T unit;
+図\ref{sample_image}はこのように挿入します．
 
-    Min(void) {
-        // 単位元
-        unit = INF;
-    }
+\begin{figure}
+\centering
+  \includegraphics[width=15cm]{./sample_image.png}\\
+  \caption{サンプルの図}
+  \label{sample_image}
+\end{figure}
 
-    // 演算関数
-    T calc(T a, T b) { return min(a, b); }
-};
+プログラムは以下のように記します．短いコードは\code{cout << "Hello world!" << endl;}のようにします\footnote{これは脚注です}．
 
-template <typename T, class MONOID>
-class SegmentTree {
-   public:
-    // セグメント木の葉の要素数
-    int n;
+\begin{lstlisting}[caption=プログラムファイル名.cpp]
+#include <iostream>
+int main() {
+  printf("hello world!\n");
+}
+\end{lstlisting}
 
-    // セグメント木
-    vector<T> tree;
+数式は以下のように記します．
 
-    // モノイド
-    MONOID mono;
+\begin{align}
+  \int^{b}_{a} f(x) dx &= \lim_{n \to \infty} \sum^{n-1}_{i=0} f(x_{i}) \Delta x \\
+  y &= \frac{1}{x+1}
+\end{align}
 
-    SegmentTree(vector<T>& v) : n(1 << (int)ceil(log2(v.size()))) {
-        tree = vector<T>(n << 1, mono.unit);
-        for (int i = 0; i < v.size(); ++i) {
-            tree[i + n] = v[i];
-        }
-        for (int i = n - 1; i > 0; --i) {
-            tree[i] = mono.calc(tree[i << 1 | 0], tree[i << 1 | 1]);
-        }
-    }
+枠付き文章と箇条書きはこのように．
 
-    SegmentTree(int _n) : n(1 << (int)ceil(log2(_n))) {
-        tree = vector<T>(n << 1, mono.unit);
-    }
+\begin{screen}
+  \begin{enumerate}
+    \item 数字の箇条書き 1
+    \item 数字の箇条書き 2
+    \item 数字の箇条書き 3
+  \end{enumerate}
+\end{screen}
 
-    // k番目の値(0-indexed)をxに変更
-    void update(int k, T x) {
-        k += n;
-        tree[k] = x;
-        for (k = k >> 1; k > 0; k >>= 1) {
-            tree[k] = mono.calc(tree[k << 1 | 0], tree[k << 1 | 1]);
-        }
-    }
+枠付き文章にタイトルをつけるならこのように．
 
-    // k番目の値(0-indexed)をxを加算
-    void add(int k, T x) {
-        k += n;
-        tree[k] += x;
-        for (k = k >> 1; k > 0; k >>= 1) {
-            tree[k] = mono.calc(tree[k << 1 | 0], tree[k << 1 | 1]);
-        }
-    }
+\begin{itembox}[l]{枠付き文章のタイトル}
+  \begin{itemize}
+    \item 点の箇条書き 1
+    \item 点の箇条書き 2
+    \item 点の箇条書き 3
+  \end{itemize}
+\end{itembox}
 
-    // [l, r)の最小値(0-indexed)を求める．
-    T query(int l, int r) {
-        T res = mono.unit;
-        l += n;
-        r += n;
-        while (l < r) {
-            if (l & 1) {
-                res = mono.calc(res, tree[l++]);
-            }
-            if (r & 1) {
-                res = mono.calc(res, tree[--r]);
-            }
-            l >>= 1;
-            r >>= 1;
-        }
-        return res;
-    }
+引用\cite{inyou}はこのようにします．URLは\url{google.com}です．
 
-    T operator[](int k) {
-        // st[i]で添字iの要素の値を返す
-        if (k - n >= 0 || k < 0) {
-            return -INF;
-        }
-        return tree[tree.size() - n + k];
-    }
 
-    void show(int elements = 31) {
-        int ret = 2;
-        for (int i = 1; i < min(2 * n, elements); ++i) {
-            if (tree[i] == mono.unit)
-                cout << "UNIT ";
-            else
-                cout << tree[i] << " ";
-            if (i == ret - 1) {
-                cout << endl;
-                ret <<= 1;
-            }
-        }
-        cout << endl;
-    }
-};
+\begin{thebibliography}{9}
+\bibitem{inyou} これが引用サンプル
+\end{thebibliography}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+

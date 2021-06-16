@@ -78,7 +78,7 @@ map<string, string> encode(string s){
     return snipet;
 }
 int main(void){
-    char InitFile[] = "init.txt"; // 初期化ファイル(init file)
+    char InitFile[] = "init.tex"; // 初期化ファイル(init file)
     char InputFile[] = "./../storage/snippet.json"; // スニペットが入っているファイル(snippet file)
     char OutputFile[] = "./../storage/LaTeX/library.tex"; // 出力ファイル(output file)
     string init_str = "";

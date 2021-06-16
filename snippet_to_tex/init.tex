@@ -1,10 +1,10 @@
-\documentclass[a4j,titlepage]{jarticle} %ここは関係ない
-\usepackage{listings,jlisting} %日本語のコメントアウトをする場合jlistingが必要
+\documentclass{jsarticle}
+\usepackage{listings, /usr/local/texlive/2021/texmf-dist/tex/latex/listings/jlisting}
 \usepackage{color}
 \usepackage{txfonts}
 %ここからソースコードの表示に関する設定
 \lstset{
-  language=c++,
+  language=C++,
   basicstyle={\ttfamily},
   identifierstyle={\small},
   commentstyle={\textit},
@@ -33,7 +33,7 @@
 \maketitle
 
 \pagenumbering{roman}
-\tableofcontents%目次
+\tableofcontents %目次
 \clearpage
 
 \pagenumbering{arabic}
