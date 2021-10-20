@@ -1,162 +1,168 @@
 // 遅延評価セグメント木
 
-template <typename T>
-class Sum {
-public:
-	// 単位元
-	T unit;
-	
-	Sum(void) {
-		// 単位元
-		unit = 0;
-	}
-
-	// 演算関数
-	T calc(T a, T b) {
-		return a + b; 
-	}
-};
-
-template <typename T, class MONOID>
+template <class X, class MONOID, class M, class MANAGE>
 class LazySegmentTree {
 public:
 	// セグメント木の葉の要素数
 	int n;
 
 	// セグメント木
-	vector<T> tree, lazy;
+	vector<X> tree;
+	vector<M> lazy;
 
 	// モノイド
 	MONOID mono;
+	MANAGE manage;
 
-	LazySegmentTree(vector<T> &v) {
-		n = 1 << (int)ceil(log2(v.size()));
-		tree = vector<T>(n << 1);
-		lazy = vector<T>(n << 1, mono.unit);
-		for(int i = 0; i < v.size(); ++i) {
-			update(i, v[i]);
+	LazySegmentTree(const vector<X>& v) : n(1 << (int)ceil(log2(v.size()))) {
+		tree = vector<X>(n << 1, mono.unit);
+		lazy = vector<M>(n << 1, manage.unit);
+		for (int i = 0; i < v.size(); ++i) {
+			tree[i + n] = v[i];
 		}
-		for(int i = v.size(); i < n; ++i) {
-			update(i, mono.unit);
+		for (int i = n - 1; i > 0; --i) {
+			tree[i] = mono.calc(tree[i << 1 | 0], tree[i << 1 | 1]);
 		}
 	}
 
-	// k番目の値(0-indexed)をxに変更
-	void update(int k, T x) {
-		k += n;
-		tree[k] = x;
-		for(k = k >> 1; k > 0; k >>= 1){
+	LazySegmentTree(const int _n) : n(1 << (int)ceil(log2(_n))) {
+		tree = vector<X>(n << 1, mono.unit);
+		lazy = vector<M>(n << 1, manage.unit);
+	}
+
+	// k 番目のノードの遅延評価を行う
+	void eval(const int k, int l, int r) {
+		// 遅延評価配列が空でない時，値を伝播する
+		if (lazy[k] == manage.unit) {
+			return;
+		}
+		if (k < n) {
+			lazy[k << 1 | 0] = manage.fm(lazy[k << 1 | 0], lazy[k]);
+			lazy[k << 1 | 1] = manage.fm(lazy[k << 1 | 1], lazy[k]);
+		}
+		tree[k] = manage.fa(tree[k], lazy[k], r - l);
+		// 伝播が終わったので自ノードの遅延配列を空にする
+		lazy[k] = manage.unit;
+	}
+
+	// 区間 [l, r) の値を全て更新する(遅延評価)
+	void updateRange(const int l, const int r, const X x) {
+		updateRange(l, r, x, 1, 0, n);
+	}
+
+	void updateRange(const int a, const int b, const X x, const int k,
+					const int l, const int r) {
+		// k 番目のノードに対して遅延評価を行う
+		eval(k, l, r);
+
+		// 完全に被覆しているならば、遅延配列に値を入れた後に評価
+		if (a <= l && r <= b) {
+			lazy[k] = manage.fm(lazy[k], x);
+			eval(k, l, r);
+		} else if (a < r && l < b) {
+			updateRange(a, b, x, k << 1 | 0, l, (l + r) >> 1);
+			updateRange(a, b, x, k << 1 | 1, (l + r) >> 1, r);
 			tree[k] = mono.calc(tree[k << 1 | 0], tree[k << 1 | 1]);
 		}
 	}
 
-	// [l, r)の最小値(0-indexed)を求める．
-	T query(int l, int r) {
-		T res = mono.unit;
-		l += n;
-		r += n;
-		while(l < r) {
-			if(l & 1) {
-				res = mono.calc(res, tree[l++]);
-			}
-			if(r & 1) {
-				res = mono.calc(res, tree[--r]);
-			}
-			l >>= 1;
-			r >>= 1;
-		}
-		return res;
-	}
+	// 区間 [l, r) の merge 結果を取得する
+	X getRange(const int l, const int r) { return getRange(l, r, 1, 0, n); }
 
-	// k番目のノードの遅延評価を行う
-	void eval(int k, int l, int r) {
-		// 遅延評価配列が空でない時，値を伝播する
-		if(lazy[k] != mono.unit) {
-			tree[k] += lazy[k];
-			if(r - l > 1) {
-				lazy[k<<1|0] += lazy[k]>>1;
-				lazy[k<<1|1] += lazy[k]>>1;
-			}
-
-			// 伝播が終わったので自ノードの遅延配列を空にする
-			lazy[k] = mono.unit;
-		}
-	}
-
-	// 区間[l, r)にxを足す(遅延評価)
-	void add(int l, int r, ll x) {
-		add(l, r, x, 1, 0, n);
-	}
-
-	void add(int a, int b, ll x, int k, int l, int r) {
-		// k番目のノードに対して遅延評価を行う
-		eval(k, l, r);
-
-		// 範囲外なら何もしない
-		if(b <= l || r <= a) return;
-		
-		// 完全に被覆しているならば、遅延配列に値を入れた後に評価
-		if(a <= l && r <= b) {
-			lazy[k] += (r - l) * x;
-			eval(k, l, r);
-		} else {
-			add(a, b, x, k<<1|0, l, (l + r)>>1);
-			add(a, b, x, k<<1|1, (l + r)>>1, r);
-			tree[k] = tree[k<<1|0] + tree[k<<1|1];
-		}
-	}
-
-	// 区間[l, r)の合計を取得する
-	ll getRange(int l, int r) {
-		return getRange(l, r, 1, 0, n);
-	}
-
-	ll getRange(int a, int b, int k, int l, int r) {
-		if(b <= l || r <= a) return mono.unit;
+	X getRange(const int a, const int b, const int k, const int l,
+			const int r) {
 		// 関数が呼び出されたら評価！
 		eval(k, l, r);
-		if(a <= l && r <= b) return tree[k];
-		ll vl = getRange(a, b, k<<1|0, l, (l + r)>>1);
-		ll vr = getRange(a, b, k<<1|1, (l + r)>>1, r);
-		return vl + vr;
+		if (r <= a || b <= l) {  // 完全に外側の時
+			return mono.unit;
+		} else if (a <= l && r <= b) {  // 完全に内側の時
+			return tree[k];
+		} else {  // 一部区間が被る時
+			X vl = getRange(a, b, k << 1 | 0, l, (l + r) >> 1);
+			X vr = getRange(a, b, k << 1 | 1, (l + r) >> 1, r);
+			return mono.calc(vl, vr);
+		}
 	}
 
-	T operator[](int k) {
-		// st[i]で添字iの要素の値を返す
-		if(k - n >= 0 || k < 0) {
+	X operator[](const int k) {
+		// st[i] で添字 i の要素の値を返す
+		if (k - n >= 0 || k < 0) {
 			return -INF;
 		}
 		return tree[tree.size() - n + k];
 	}
 
 	void show(void) {
-		showTree();
-		showLazy();
+		this->showTree(tree);
+		this->showLazy(lazy);
 	}
 
-	void showTree(void) {
+	template <class T>
+	void showTree(vector<T>& tree) {
 		int ret = 2;
-		for(int i = 1; i < 2*n; ++i) {
-			if(tree[i] == mono.unit) cout << "UNIT ";
-			else cout << tree[i] << " ";
-			if(i == ret - 1) {
+		for (int i = 1; i < 2 * n; ++i) {
+			if (tree[i] == mono.unit) {
+				cout << "UNIT ";
+			} else {
+				cout << tree[i] << " ";
+			}
+			if (i == ret - 1) {
 				cout << endl;
 				ret <<= 1;
 			}
 		}
 		cout << endl;
 	}
+};
 
-	void showLazy(void) {
-		int ret = 2;
-		for(int i = 1; i < 2*n; ++i) {
-			if(lazy[i] == mono.unit) cout << "UNIT ";
-			else cout << lazy[i] << " ";
-			if(i == ret - 1) {
-				cout << endl;
-				ret <<= 1;
-			}
-		}
-		cout << endl;
-	}
+using X = ll;
+using M = ll;
+
+struct Monoid {
+	Monoid(void) {}
+
+	struct Sum {
+		const X unit = 0;
+		static X calc(X a, X b) { return a + b; }
+	};
+	struct Min {
+		const X unit = INF;
+		static X calc(X a, X b) { return min(a, b); }
+	};
+
+	// モノイド
+	Sum monoid;
+
+	// 単位元
+	X unit = monoid.unit;
+
+	// 演算関数
+	function<X(X, X)> calc = monoid.calc;
+};
+
+struct Manage {
+	Manage(void) {}
+
+	struct Add {
+		const M unit = 0;
+		static M fa(X x, M m, size_t size) { return x + m * size; }  // RSQ+RAQ
+		static M fa2(X x, M m, size_t size) { return x + m; }        // RMQ+RAQ
+		static M fm(M m1, M m2) { return m1 + m2; }
+	};
+	struct Update {
+		const M unit = INF;
+		static M fa(X x, M m, size_t size) { return m * size; }  // RSQ+RUQ
+		static M fa2(X x, M m, size_t size) { return m; }        // RMQ+RUQ
+		static M fm(M m1, M m2) { return m2; }
+	};
+
+	// 作用構造体
+	Update manage;
+
+	// 単位元
+	M unit = manage.unit;
+
+	// 演算関数
+	function<M(X, M, size_t)> fa = manage.fa;
+	function<M(M, M)> fm = manage.fm;
 };
