@@ -1,34 +1,45 @@
 import re
 import os
-f = open('./input.txt', 'r')
+
+root = __file__[:-15]
+f = open(f"{root}/input.txt", "r")
 line = f.readline()
 
-code = []
-formated_code = []
+codes = []
+formated_codes = []
 
 while line:
-    code.append(line)
+    codes.append(line)
     line = f.readline()
 f.close()
 
-    
-for i in range(len(code)):
-    match_obj = re.search(r'[^ ]', code[i])
-    if i != len(code)-1:
-        formated_code.append('"' + "\\t"*(int)(match_obj.start()/4) + code[i][match_obj.start():-1].replace('"', '\\"') + '",')
+
+for i, code in enumerate(codes):
+    match_obj = re.search(r"[^ ]", code)
+    if i != len(codes) - 1:
+        formated_codes.append(
+            '"'
+            + "\\t" * (int)(match_obj.start() / 4)
+            + code[match_obj.start() : -1].replace('"', '\\"')
+            + '",'
+        )
     else:
-        formated_code.append('"' + "\\t"*(int)(match_obj.start()/4) + code[i][match_obj.start():].replace('"', '\\"') + '"')
+        formated_codes.append(
+            '"'
+            + "\\t" * (int)(match_obj.start() / 4)
+            + code[match_obj.start() :].replace('"', '\\"')
+            + '"'
+        )
 
 
-path = './output.txt'
+path = f"{root}/output.txt"
 os.remove(path)
-with open(path, mode='a') as f:
+with open(path, mode="a") as f:
     f.write('\t"": {\n\t\t"prefix": "",\n\t\t"body": [\n')
 
-for i in formated_code:
-    with open(path, mode='a') as f:
-        f.write('\t\t\t' + i + '\n')
+for i in formated_codes:
+    with open(path, mode="a") as f:
+        f.write("\t\t\t" + i + "\n")
 
-with open(path, mode='a') as f:
+with open(path, mode="a") as f:
     f.write('\t\t],\n\t\t"description": ""\n\t}')
-		
