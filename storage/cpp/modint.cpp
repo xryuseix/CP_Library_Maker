@@ -133,4 +133,13 @@ struct mint {
 		}
 		return res;
 	}
+	mint powll(mint x, ll n) {
+		mint res = 1;
+		while (n > 0) {
+			if (n % 2) res *= x;
+			x *= x;
+			n /= 2;
+		}
+		return res;
+	}
 };
